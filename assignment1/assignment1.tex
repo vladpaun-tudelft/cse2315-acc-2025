@@ -1,0 +1,119 @@
+\documentclass[a4paper,11pt]{article}
+
+% ---------- Packages ----------
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+% ---------- Theorem Environments ----------
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+
+% ---------- Custom Commands ----------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Alphabet}{\Sigma}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+
+% ---------- Algorithm Style ----------
+\algrenewcommand\algorithmicrequire{\textbf{Input:}}
+\algrenewcommand\algorithmicensure{\textbf{Output:}}
+
+% ---------- Title Info ----------
+\title{\textbf{CSE2315 — Assignment 1}}
+\author{Vlad Paun \\ 6152937}
+\date{\today}
+
+% ---------- Document ----------
+\begin{document}
+
+	\maketitle
+	%\thispagestyle{empty}
+	%\newpage
+
+	\section{Exercise 1}
+	Consider a language $L=\set{ok,a,bad,dab,abba,hi,\eps,acc,duck}$
+	\subsection*{a) Give a possible $\Alphabet$ such at $L \subseteq \Alphabet^*$}
+	\[
+	\Alphabet = \set{a,b,c,d,h,i,k,o,u}
+	\]
+	\subsection*{b) Why is this only possible $\Alphabet$}
+	Supposing this question is asking why this is the only possible \textbf{minimal} alphabet, the answer is that it must contain exactly the set of symbols that appear in the words in $L$, and that set is uniquely determined.
+	\subsection*{c) Give all words in $L$ in shortlex order}
+	\[
+	\eps,a,hi,okacc,bad,dab,abba,duck
+	\]
+	\section{Exercise 2}
+	Consider the following claims (a) and (b). For each claim, verify whether it is true for arbitrary languages $L_1\subseteq\Alphabet^*_1$,$L_2\subseteq\Alphabet^*_2$,$L_3\subseteq\Alphabet^*_3$,$L_4\subseteq\Alphabet^*_4$. If a claim is true, give a proof; if it is not true, give a counterexample with an explanation how the counterexample shows the claim is false
+	\section{Exercise 3}
+	\section{Exercise 4}
+	\section{Exercise 5}
+	\section{Bonus Exercise}
+	Clearly describe the problem. Use math mode where appropriate:
+	\[
+	f(n) = \sum_{i=1}^{n} i^2
+	\]
+
+	\section{Approach}
+	Explain your reasoning, definitions, and structure.
+
+	\subsection{Definitions}
+	\begin{definition}
+		A function $f : \N \to \N$ is \emph{monotone} if $f(n+1) \ge f(n)$.
+	\end{definition}
+
+	\subsection{Lemma Example}
+	\begin{lemma}
+		For all $n \in \N$, $n^2 \ge n$.
+	\end{lemma}
+
+	\begin{proof}
+		For $n \ge 1$, we have $n^2 - n = n(n-1) \ge 0$.
+	\end{proof}
+
+	\section{Algorithm}
+	\begin{algorithm}[H]
+		\caption{Example Algorithm}
+		\begin{algorithmic}[1]
+			\Require Integer $n$
+			\Ensure Sum of first $n$ integers
+			\State $s \gets 0$
+			\For{$i \gets 1$ to $n$}
+			\State $s \gets s + i$
+			\EndFor
+			\State \Return $s$
+		\end{algorithmic}
+	\end{algorithm}
+
+	\section{Results}
+	Tables look clean with \texttt{booktabs}:
+
+	\begin{center}
+		\begin{tabular}{ccc}
+			\toprule
+			$n$ & Value & Time \\
+			\midrule
+			10 & 55 & 0.01s \\
+			100 & 5050 & 0.02s \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+
+	\section{Conclusion}
+	Summarize findings briefly.
+
+\end{document}
