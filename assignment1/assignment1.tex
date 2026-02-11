@@ -148,6 +148,11 @@
 	The starting state of $D''$ is in $Q$, and all transitions in $\delta$, which cover all states in $Q$ always remain in $Q$. So therefore, it is impossible for an input to leave $Q$ and go into $Q_2$. Therefore, $D$ and $D''$ are basically equivalent, as they have the same set of reachable states and stuff.
 
 	\section{Exercise 5}
+	Consider a modification of the DFA model, called NEFA. The NEFA model is identical to the DFA with the extra requirement that $q_o\in F$
+	\subsection*{(a) Is the NEFA model equally expressive as the DFA model?}
+	It is not as expressive. Consider the DFA $Q=(\set{q_0,q_1},\set{0,1},\delta,q_0,\set{q1})$ with $\delta(\_,\_)=q_1$ The language of D does not contain $\eps$, whereas any language recognized by a NEFA must contain $\eps$, thus they can never be equivalent.
+	\subsection*{(b) Take 2 DFAs $D_1$ and $D_2$. Now take the language $L=(L(D_1)\cap L(D_2))^*$. Is L regular?}
+	We have seen in the book that intersection and the $*$ operation are closed under the regural languages. So the answer is $L$ is regular.
 	\section{Bonus Exercise}
 
 \end{document}
