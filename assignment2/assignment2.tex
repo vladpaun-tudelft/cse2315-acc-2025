@@ -213,6 +213,80 @@
 		\end{tikzpicture}
 	\end{center}
 	\subsection{Describe the languages of $D_1$ and $D_2$}
+	\begin{align*}
+		L(D_1) = (ab)^*,
+		L(D_2) = (ba)^*
+	\end{align*}
+	\subsection{Construct a DFA D such that $L(D) = L(D_1)\cap L(D_2)^c$.}
+	\begin{tikzpicture}[->, >=Stealth, auto, node distance=2.5cm]
+		\node[state] (q00) {$q_{00}$};
+		\node[state, accepting, right=4cm of q00] (q02) {$q_{02}$};
+		\node[state] (q12) [below of=q02] {$q_{12}$};
+
+		\node[state] (q22) [below of=q12] {$q_{22}$};
+		\node[state] (q21) [left of=q22] {$q_{21}$};
+		\node[state] (q20) [left of=q21]{$q_{20}$};
+
+
+		\path (q00) edge node {a} (q12);
+		\path (q00) edge node {b} (q21);
+
+		\path (q02) edge [bend left] node {a} (q12);
+		\path (q02) edge [bend left=45] node {b} (q22);
+
+		\path (q12) edge node {a} (q22);
+		\path (q12) edge node {b} (q02);
+
+		\path (q20) edge [bend right=45] node {a} (q22);
+		\path (q20) edge [bend right] node {b} (q21);
+
+		\path (q21) edge node [above]{a} (q20);
+		\path (q21) edge node {b} (q22);
+
+		\path (q22) edge [loop right] node {a,b} (q22);
+	\end{tikzpicture}
+
+	\iffalse
+	\begin{tikzpicture}[->, >=Stealth, auto, node distance=2.5cm]
+		\node[state] (q00) {$q_{00}$};
+		\node[state, accepting] (q01) [right of=q00] {$q_{01}$};
+		\node[state, accepting] (q02) [right of=q01] {$q_{02}$};
+
+		\node[state] (q10) [below of=q00] {$q_{10}$};
+		\node[state] (q11) [right of=q10] {$q_{11}$};
+		\node[state] (q12) [right of=q11] {$q_{12}$};
+
+		\node[state] (q20) [below of=q10]{$q_{20}$};
+		\node[state] (q21) [right of=q20] {$q_{21}$};
+		\node[state] (q22) [right of=q21] {$q_{22}$};
+
+		\path (q00) edge node {a} (q12);
+		\path (q00) edge node {b} (q21);
+
+		\path (q01) edge node {a} (q10);
+		\path (q01) edge node {b} (q22);
+
+		\path (q02) edge [bend left] node {a} (q12);
+		\path (q02) edge [bend left=45] node {b} (q22);
+
+		\path (q10) edge node {a} (q22);
+		\path (q10) edge [bend left] node {b} (q01);
+
+		\path (q11) edge node {a} (q20);
+		\path (q11) edge node {b} (q02);
+
+		\path (q12) edge node {a} (q22);
+		\path (q12) edge node {b} (q02);
+
+		\path (q20) edge [bend right=45] node {a} (q22);
+		\path (q20) edge [bend right] node {b} (q21);
+
+		\path (q21) edge node {a} (q20);
+		\path (q21) edge node {b} (q22);
+
+		\path (q22) edge [loop right] node {a,b} (q22);
+	\end{tikzpicture}
+	\fi
 
 
 	\section{Exercise 4}
