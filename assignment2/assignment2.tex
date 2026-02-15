@@ -303,11 +303,171 @@
 	In order to enforce the one $a$ in the word, we have to go $(b\cup c)^*a(b\cup c)^*$. And then to add $ac$ blocks after the first $a$, we simply or those $ac$ blocks with the $b\cup c$.
 
 	\section{Exercise 5}
+	Convert the following NFA $N$ to a regular expression $R$ such that $L(R) = L(N)$
+
+	\begin{tikzpicture}[->, >=Stealth, auto, node distance=2.5cm]
+		\node[initial,state] (q0) {$q_0$};
+		\node[state,accepting] (q1) [right of=q0] {$q_1$};
+		\node[state,accepting] (q2) [below of=q1] {$q_2$};
+
+		\path (q0) edge [bend right] node {a} (q1);
+		\path (q0) edge [bend right] node {b} (q2);
+		\path (q1) edge [bend right] node[above] {b} (q0);
+		\path (q1) edge [bend left] node {$\varepsilon$} (q2);
+		\path (q2) edge [bend left] node {b} (q1);
+		\path (q2) edge [loop below] node {a,b} (q2);
+	\end{tikzpicture}
+
+	We begin by converting it to a GNFA (I omit arrows on which the regular expresion would be $\emptyset$):
+
+	\begin{tikzpicture}[->, >=Stealth, auto, node distance=2.5cm]
+		\node[initial,state] (qstart) {$q_{start}$};
+		\node[state] (q0)[right of=qstart] {$q_0$};
+		\node[state] (q1) [right of=q0] {$q_1$};
+		\node[state] (q2) [below of=q1] {$q_2$};
+
+		\node[state, accepting] (qend) [right of=q1] {$q_{end}$};
+
+		\path (qstart) edge node {$\varepsilon$} (q0);
+		\path (q1) edge node {$\varepsilon$} (qend);
+		\path (q2) edge [bend right]node[below] {$\varepsilon$} (qend);
+
+		\path (q0) edge [bend right] node {$a$} (q1);
+		\path (q0) edge [bend right] node {$b$} (q2);
+		\path (q1) edge [bend right] node[above] {$b$} (q0);
+		\path (q1) edge [bend left] node {$\varepsilon$} (q2);
+		\path (q2) edge [bend left] node {$b$} (q1);
+		\path (q2) edge [loop below] node {$a\cup b$} (q2);
+	\end{tikzpicture}
+
+	Then, we rip out the state $q_0$:
+
+	\begin{tikzpicture}[->, >=Stealth, auto, node distance=2.5cm]
+		\node[initial,state] (qstart) {$q_{start}$};
+		%\node[state] (q0)[right of=qstart] {$q_0$};
+		\node[state] (q1) [right of=qstart] {$q_1$};
+		\node[state] (q2) [below of=q1] {$q_2$};
+
+		\node[state, accepting] (qend) [right of=q1] {$q_{end}$};
+
+		\path (qstart) edge node {$a$} (q1);
+		\path (qstart) edge[bend right] node {$b$} (q2);
+
+		\path (q1) edge [bend left] node {$bb\cup \varepsilon$} (q2);
+		\path (q2) edge [bend left] node {$b$} (q1);
+
+		\path (q1) edge node {$\varepsilon$} (qend);
+		\path (q2) edge [bend right]node [below]{$\varepsilon$} (qend);
 
 
+		\path (q2) edge [loop below] node {$a\cup b$} (q2);
+	\end{tikzpicture}
+
+	Now, we rip out $q_1$:
+
+	\begin{tikzpicture}[->, >=Stealth, auto, node distance=4cm]
+		\node[initial,state] (qstart) {$q_{start}$};
+		%\node[state] (q0)[right of=qstart] {$q_0$};
+		%\node[state] (q1) [right of=qstart] {$q_1$};
+		\node[state] (q2) [right of=qstart] {$q_2$};
+
+		\node[state, accepting] (qend) [right of=q1] {$q_{end}$};
+
+		%\path (qstart) edge node {$a$} (q1);
+		\path (qstart) edge node {$a \cup b \cup abb$} (q2);
+
+		%\path (q1) edge [bend left] node {$bb\cup \varepsilon$} (q2);
+		%\path (q2) edge [bend left] node {$b$} (q1);
+
+		%\path (q1) edge node {$\varepsilon$} (qend);
+		\path (q2) edge node [below]{$\varepsilon\cup b$} (qend);
+
+
+		\path (q2) edge [loop below] node {$a\cup b \cup bbb$} (q2);
+	\end{tikzpicture}
+
+	Now, we rip out $q_2$
+
+	\begin{tikzpicture}[->, >=Stealth, auto, node distance=8cm]
+		\node[initial,state] (qstart) {$q_{start}$};
+		%\node[state] (q2) [right of=qstart] {$q_2$};
+		\node[state, accepting] (qend) [right of=qstart] {$q_{end}$};
+
+		\path (qstart) edge node {$(a\cup b\cup abb)(a\cup b\cup bbb)^*(\varepsilon\cup b)$} (qend);
+
+		%\path (qstart) edge node {$a \cup b \cup abb$} (q2);
+		%\path (q2) edge node [below]{$\varepsilon\cup b$} (qend);
+		%\path (q2) edge [loop below] node {$a\cup b \cup bbb$} (q2);
+	\end{tikzpicture}
+
+	Therefore, $R = (a\cup b\cup abb)(a\cup b\cup bbb)^*(\varepsilon\cup b)$, which simplifies nicely to:
+	\[
+	\boxed{R=\Alphabet^+}
+	\]
 
 	\section{Exercise 6}
+	Consider the following two DFAs, $D$ on the left, $D'$ on the right:
+	\begin{center}
+		\begin{tikzpicture}[->, >=Stealth, auto, node distance=2.5cm]
+			\node[initial,state] (q0) {$q_0$};
+			\node[state, accepting] (q1) [right of=q0] {$q_1$};
 
+			\path (q0) edge node {a,b} (q1);
+			\path (q1) edge [bend left] node {a} (q0);
+			\path (q1) edge [loop right] node {b} (q1);
+		\end{tikzpicture}
+		\hspace{0.5cm}
+		\begin{tikzpicture}[->, >=Stealth, auto, node distance=2.5cm]
+			\node[initial,state,accepting] (q0) {$q_0$};
+			\node[state] (q1) [right of=q0] {$q_1$};
+			\node[state] (q2) [right of=q1] {$q_2$};
+
+			\path (q0) edge node {a,b} (q1);
+
+			\path (q1) edge [bend left] node {a} (q0);
+			\path (q1) edge [bend left] node {b} (q2);
+			\path (q2) edge [bend left] node {a} (q1);
+			\path (q2) edge [loop right] node {b} (q2);
+		\end{tikzpicture}
+	\end{center}
+	\subsection{Construct a new DFA $D''$ of at most 2 states, such that $L(D'') = \overline{L(D)}$}
+	\begin{tikzpicture}[->, >=Stealth, auto, node distance=2.5cm]
+		\node[initial,state, accepting] (q0) {$q_0$};
+		\node[state] (q1) [right of=q0] {$q_1$};
+
+		\path (q0) edge node {a,b} (q1);
+		\path (q1) edge [bend left] node {a} (q0);
+		\path (q1) edge [loop right] node {b} (q1);
+	\end{tikzpicture}\\
+	All you have to do is invert accepting and non-accepting states.
+	\subsection{Construct a DFA $D'''$, such that $L(D''') = L(D)\cup L(D')$}
+	\begin{tikzpicture}[->, >=Stealth, auto, node distance=4cm]
+		\node[initial,state,accepting] (q00) {$q_{00}$};
+		\node[state] (q01) [right of=q00] {$q_{01}$};
+		%\node[state] (q02) [right of=q01] {$q_{02}$};
+
+		\node[state,accepting] (q10) [below of=q00] {$q_{10}$};
+		\node[state,accepting] (q11) [right of=q10] {$q_{11}$};
+		\node[state,accepting] (q12) [right of=q11] {$q_{12}$};
+
+		\path (q00) edge [bend left] node {a,b} (q11);
+
+		\path (q01) edge [bend left] node {a} (q10);
+		\path (q01) edge [bend left] node {b} (q12);
+
+		%\path (q02) edge [bend left] node {a} (q11);
+		%\path (q02) edge node {b} (q12);
+
+		\path (q10) edge [bend left] node {a} (q01);
+		\path (q10) edge node {b} (q11);
+
+		\path (q11) edge [bend left] node {a} (q00);
+		\path (q11) edge node {b} (q12);
+
+		\path (q12) edge [bend left] node {a} (q01);
+		\path (q12) edge [loop right] node {b} (q12);
+
+	\end{tikzpicture}
 
 	\section{Bonus Exercise}
 
