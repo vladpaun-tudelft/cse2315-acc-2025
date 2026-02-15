@@ -290,9 +290,20 @@
 
 
 	\section{Exercise 4}
+	Suppose we have the following language $L$ over the alphabet $\Alphabet = \set{a,b,c}$:\\
+	\begin{align*}
+		L = \set{w\in \Alphabet^* | w \text{ has an $a$ and every $a$ after the first $a$ in $w$ is immediately followed by a $c$}}
+	\end{align*}
 
+	\subsection{Give a regular expression $R$ such that $L(R) = L$.}
+	\begin{align*}
+		R = (b\cup c)^*a(b\cup c\cup ac)^*
+	\end{align*}
+	\subsection{Explain the answer}
+	In order to enforce the one $a$ in the word, we have to go $(b\cup c)^*a(b\cup c)^*$. And then to add $ac$ blocks after the first $a$, we simply or those $ac$ blocks with the $b\cup c$.
 
 	\section{Exercise 5}
+
 
 
 	\section{Exercise 6}
