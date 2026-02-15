@@ -32,6 +32,10 @@
 \newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
 \newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
 
+% ---------- Section Style ----------
+\renewcommand{\thesubsection}{(\alph{subsection})}
+\renewcommand{\thesection}{}
+
 % ---------- Algorithm Style ----------
 \algrenewcommand\algorithmicrequire{\textbf{Input:}}
 \algrenewcommand\algorithmicensure{\textbf{Output:}}
@@ -50,20 +54,20 @@
 
 	\section{Exercise 1}
 	Consider a language $L=\set{ok,a,bad,dab,abba,hi,\eps,acc,duck}$
-	\subsection*{(a) Give a possible $\Alphabet$ such at $L \subseteq \Alphabet^*$}
+	\subsection{Give a possible $\Alphabet$ such at $L \subseteq \Alphabet^*$}
 	\[
 	\Alphabet = \set{a,b,c,d,h,i,k,o,u}
 	\]
-	\subsection*{(b) Why is this not only possible $\Alphabet$}
+	\subsection{Why is this not only possible $\Alphabet$}
 	An alphabet can contain letters that do not appear in any word in the language, so $\Alphabet' = \Alphabet \cup \set{x}$ is also a valid alphabet.
-	\subsection*{(c) Give all words in $L$ in shortlex order}
+	\subsection{Give all words in $L$ in shortlex order}
 	\[
 	\eps,a,hi,okacc,bad,dab,abba,duck
 	\]
 
 	\section{Exercise 2}
 	Consider the following claims (a) and (b). For each claim, verify whether it is true for arbitrary languages $L_1\subseteq\Alphabet^*_1$,$L_2\subseteq\Alphabet^*_2$,$L_3\subseteq\Alphabet^*_3$,$L_4\subseteq\Alphabet^*_4$. If a claim is true, give a proof; if it is not true, give a counterexample with an explanation how the counterexample shows the claim is false.
-	\subsection*{(a) If $L_1\cup L_2 = L_3\cup L_4$, then $\Alphabet_1 \cup \Alphabet_2 = \Alphabet_3 \cup \Alphabet_4$}
+	\subsection{If $L_1\cup L_2 = L_3\cup L_4$, then $\Alphabet_1 \cup \Alphabet_2 = \Alphabet_3 \cup \Alphabet_4$}
 	\textbf{FALSE.}\\
 	Counterexample:
 	\begin{align*}
@@ -74,7 +78,7 @@
 	\Alphabet_1 \cup \Alphabet_2 = \set{a,b,x} \neq \Alphabet_3 \cup \Alphabet_4 = \set{a,b,y}
 	\end{align*}
 
-	\subsection*{(b) If $L_1\cup L_2 \subseteq L_3\cap L_4$, then $L_1L_2 \subseteq L_3L_4$}
+	\subsection{If $L_1\cup L_2 \subseteq L_3\cap L_4$, then $L_1L_2 \subseteq L_3L_4$}
 	\textbf{TRUE.}\\
 	\begin{proof}
 		From the first part of the implication, it follows that every word in $L_1$ and every word is $L_2$ is in both $L_3$ and $L_4$, so $L_1 \subseteq L_3$ and $L_2 \subseteq L_4$\\
@@ -87,7 +91,7 @@
 	\[
 	L=\set{w|\text{each $b$ in $w$ is immediately preceeded by at least two $a$s and w ends with an $a$}}
 	\]
-	\subsection*{(a) Give the transition graph of $M$. Use no more than 6 states.}
+	\subsection{Give the transition graph of $M$. Use no more than 6 states.}
 	\begin{tikzpicture}[->, >=Stealth, auto, node distance=2.5cm]
 		\node[initial,state] (q0) {$q_0$};
 		\node[accepting,state] (q1) [right of=q0] {$q_1$};
@@ -103,7 +107,7 @@
 		edge[bend left] node {b} (q0)
 		(q3) edge[loop right] node {a,b} (q3);
 	\end{tikzpicture}
-	\subsection*{(b) Describe briefly how $M$ works.}
+	\subsection{Describe briefly how $M$ works.}
 	Basically it counts if there s been at least 2 $a$s before a $b$. If not, the word is invalid so we go to a non-accepting state of $q_3$, which gets stuck there. If we get a $b$ in a valid position, we go back to the beginning thing. Also, to check that it ends in a, only $q_2$ and $q_3$ are valid.
 
 	\section{Exercise 4}
@@ -114,7 +118,7 @@
 	$q_b$ & $q_b$ & $q_c$ \\
 	$q_c$ & $q_c$ & $q_a$ \\
 	\end{tabular}
-	\subsection*{(a) Give a transition diagram that corresponds to $D$.}
+	\subsection{Give a transition diagram that corresponds to $D$.}
 	\begin{tikzpicture}[->, >=Stealth, auto, node distance=2.5cm]
 		\node[initial,accepting,state] (qa) {$q_a$};
 		\node[state] (qb) [right of=qa] {$q_b$};
@@ -129,9 +133,9 @@
 		edge node {1} (qa);
 	\end{tikzpicture}
 
-	\subsection*{(b) Give a word $w$ of length 3 that is not in $D$ but is in $D'=(Q,\Alphabet,\delta,q_a,F\cup \set{q_c})$}
+	\subsection{Give a word $w$ of length 3 that is not in $D$ but is in $D'=(Q,\Alphabet,\delta,q_a,F\cup \set{q_c})$}
 	\[010\]
-	\subsection*{(c) Now imagine that we create a DFA $D''=(Q\cup Q_2,\Alphabet,\delta_1,q_a,F)$, what do we know about $\delta_2$?}
+	\subsection{Now imagine that we create a DFA $D''=(Q\cup Q_2,\Alphabet,\delta_1,q_a,F)$, what do we know about $\delta_2$?}
 	$
 	\delta_1(q,s) =
 	\begin{cases}
@@ -140,7 +144,7 @@
 	\end{cases}
 	$ for some function $\delta_2:Q_2 \times \Alphabet \to Q \cup Q_2$. $Q \cap Q_2 = \emptyset$
 	Every state in $Q_2$ must have a transition defined for all inputs, so in our case, they must have a transition for $0$ and for $1$. So the number of extra transitions is $2|Q_2|$
-	\subsection*{(d)Describe as accurately as possible the relation between $L(D)$ and $L(D'')$ in terms of $\subset$,$\subseteq$,$=$ relations. Explain your answer.}
+	\subsection{Describe as accurately as possible the relation between $L(D)$ and $L(D'')$ in terms of $\subset$,$\subseteq$,$=$ relations. Explain your answer.}
 	\[
 	L(D) = L(D'')
 	\]
@@ -149,9 +153,9 @@
 
 	\section{Exercise 5}
 	Consider a modification of the DFA model, called NEFA. The NEFA model is identical to the DFA with the extra requirement that $q_o\in F$
-	\subsection*{(a) Is the NEFA model equally expressive as the DFA model?}
+	\subsection{Is the NEFA model equally expressive as the DFA model?}
 	It is not as expressive. Consider the DFA $Q=(\set{q_0,q_1},\set{0,1},\delta,q_0,\set{q1})$ with $\delta(\_,\_)=q_1$ The language of D does not contain $\eps$, whereas any language recognized by a NEFA must contain $\eps$, thus they can never be equivalent.
-	\subsection*{(b) Take 2 DFAs $D_1$ and $D_2$. Now take the language $L=(L(D_1)\cap L(D_2))^*$. Is L regular?}
+	\subsection{Take 2 DFAs $D_1$ and $D_2$. Now take the language $L=(L(D_1)\cap L(D_2))^*$. Is L regular?}
 	We have seen in the book that intersection and the $*$ operation are closed under the regural languages. So the answer is $L$ is regular.
 	\section{Bonus Exercise}
 
