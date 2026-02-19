@@ -53,7 +53,16 @@
 	%\newpage
 
 	\section{Exercise 1}
+	Suppose we have the following language $L$ over the alphabet $\Alphabet=\set{a,0,1}$:
+	\[
+	L = \set{ua^kv | u,v\in \set{0,1}^* \text{ and }c_0(u) + c_1(v) > k}
+	\]
+	Where $c_x(w)$ is defined as the number of occurrences of $x$ in $w$. Use the pumping lemma to show that $L$ is not regular.
 
+	\begin{proof}By contradiction.\\
+		Assume to the contrary that $L$ is regular. Let $p$ be the pumping length given by the pumping lemma. Choose $s$ to be the string $a^p1^p1$. Because $s$ is a member of $L$ and $s$ has length more than $p$, the pumping lemma guarantees that $s$ can be split into three pieces, $s = xyz$, where for any $i \ge 0$ the string $xy^iz$ is in $L$. We show this outcome is impossible.\\
+		Condition 3 of the pumping lemma says that $|xy| \le p$. Thus, in the case of our word, y must consist of only $a$s. Let $k_{xyz}$ and $k_{kyyz}$ represent the number of $a$s in $xyz$ and $xyyz$ respectively. $k_{xyz} = p$ and $k_{xyyz} > k_{xyz} = p$, but the number of $1$s in $xyyz$ is still $p+1$. Thus in $xyyz$ we have $c_0(u) + c_1(v) \le k_{xyyz}$, so $xyyz$ cannot be in $L$. Therefore, $s$ cannot be pumped and we have reached our desired contradiction.
+	\end{proof}
 
 	\section{Bonus Exercise}
 
