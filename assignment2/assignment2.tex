@@ -355,6 +355,7 @@
 
 		\path (q1) edge [bend left] node {$bb\cup \varepsilon$} (q2);
 		\path (q2) edge [bend left] node {$b$} (q1);
+		\path (q1) edge [loop above] node {$ba$} (q1);
 
 		\path (q1) edge node {$\varepsilon$} (qend);
 		\path (q2) edge [bend right]node [below]{$\varepsilon$} (qend);
@@ -365,7 +366,7 @@
 
 	Now, we rip out $q_1$:
 
-	\begin{tikzpicture}[->, >=Stealth, auto, node distance=4cm]
+	\begin{tikzpicture}[->, >=Stealth, auto, node distance=5cm]
 		\node[initial,state] (qstart) {$q_{start}$};
 		%\node[state] (q0)[right of=qstart] {$q_0$};
 		%\node[state] (q1) [right of=qstart] {$q_1$};
@@ -374,33 +375,33 @@
 		\node[state, accepting] (qend) [right of=q1] {$q_{end}$};
 
 		%\path (qstart) edge node {$a$} (q1);
-		\path (qstart) edge node {$a \cup b \cup abb$} (q2);
+		\path (qstart) edge node {$b\cup a(ba)^*(bb\cup \varepsilon)$} (q2);
 
 		%\path (q1) edge [bend left] node {$bb\cup \varepsilon$} (q2);
 		%\path (q2) edge [bend left] node {$b$} (q1);
 
 		%\path (q1) edge node {$\varepsilon$} (qend);
-		\path (q2) edge node [below]{$\varepsilon\cup b$} (qend);
+		\path (q2) edge node [below]{$\varepsilon\cup b(ba)^*$} (qend);
 
 
-		\path (q2) edge [loop below] node {$a\cup b \cup bbb$} (q2);
+		\path (q2) edge [loop below] node {$a \cup b(ba)^*(bb\cup\varepsilon)$} (q2);
 	\end{tikzpicture}
 
 	Now, we rip out $q_2$
 
-	\begin{tikzpicture}[->, >=Stealth, auto, node distance=8cm]
+	\begin{tikzpicture}[->, >=Stealth, auto, node distance=12cm]
 		\node[initial,state] (qstart) {$q_{start}$};
 		%\node[state] (q2) [right of=qstart] {$q_2$};
 		\node[state, accepting] (qend) [right of=qstart] {$q_{end}$};
 
-		\path (qstart) edge node {$(a\cup b\cup abb)(a\cup b\cup bbb)^*(\varepsilon\cup b)$} (qend);
+		\path (qstart) edge node {$(b\cup a(ba)^*(bb\cup \varepsilon))(a \cup b(ba)^*(bb\cup\varepsilon))^*(\varepsilon\cup b(ba)^*)$} (qend);
 
 		%\path (qstart) edge node {$a \cup b \cup abb$} (q2);
 		%\path (q2) edge node [below]{$\varepsilon\cup b$} (qend);
 		%\path (q2) edge [loop below] node {$a\cup b \cup bbb$} (q2);
 	\end{tikzpicture}
 
-	Therefore, $R = (a\cup b\cup abb)(a\cup b\cup bbb)^*(\varepsilon\cup b)$, which simplifies nicely to:
+	Therefore, $R = (b\cup a(ba)^*(bb\cup \varepsilon))(a \cup b(ba)^*(bb\cup\varepsilon))^*(\varepsilon\cup b(ba)^*)$, which simplifies nicely to:
 	\[
 	\boxed{R=\Alphabet^+}
 	\]
