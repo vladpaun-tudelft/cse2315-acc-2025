@@ -64,6 +64,57 @@
 		Condition 3 of the pumping lemma says that $|xy| \le p$. Thus, in the case of our word, y must consist of only $a$s. Let $k_{xyz}$ and $k_{kyyz}$ represent the number of $a$s in $xyz$ and $xyyz$ respectively. $k_{xyz} = p$ and $k_{xyyz} > k_{xyz} = p$, but the number of $1$s in $xyyz$ is still $p+1$. Thus in $xyyz$ we have $c_0(u) + c_1(v) \le k_{xyyz}$, so $xyyz$ cannot be in $L$. Therefore, $s$ cannot be pumped and we have reached our desired contradiction.
 	\end{proof}
 
+	\section{Exercise 2}
+	Suppose we have the context free grammar $G=(\set{S,T,V},\set{a,b,c},R,S)$, with R containing the following rules:
+	\begin{align*}
+		S &\to Tc\mid cV\\
+		T &\to aTb\mid bTa\mid \eps\\
+		V &\to a\mid b
+	\end{align*}
+
+	\subsection{Describe the set $L(G)$ in your own words.}
+	\subsection{Construct a PDA $M$ such that $L(M)=L(G)$. Use no more than 8 states.}
+	\subsection{Explain how your PDA works.}
+
+	\section{Exercise 3}
+	Consider the following rules $R$ of a CFG $G = (\set{S,A,B},\set{a,b},R,S)$:
+	\begin{align*}
+		S &\to bB\mid abB\\
+		A &\to bA\mid AA\\
+		B &\to AS\mid SA\mid \eps \\
+	\end{align*}
+	Convert G into Chomsky normal form.
+	\section{Exercise 4}
+	Let $L$ be the set of all TUDON words.
+	\subsection{Give a CFG $G$ such that $L(G) = L$, using no more than 6 variables and 9 + 26 rules.}
+	\subsection{Explain why your grammar generates $L$}
+	\subsection{Is your grammar ambiguous? Give an example or an argument why not.}
+	\section{Exercise 5}
+	Let the operator $@$ be defined as $A@=\set{a^{|w|}\mid w\in A}$. Prove that regularity is closed under $@$.
+	\begin{proof}
+		Let $A$ be a regular language. We will prove that $A@$ is also regular.\\
+		Since $A$ is regular, there is a DFA $M=(Q,\Alphabet,\delta,q_0,F)$ such that $L(M) = A$. Now we will build the NFA $M'=(Q,\set{a},\Delta,q_0,F)$, where $\Delta(q,a) = \set{\delta(q,x)\mid x\in\Alphabet}$. In other words, take $M$ and replace every symbol on transition arrows with $a$.\\
+		Next, show that they are equivalent kinda. TODO.
+	\end{proof}
+	\section{Exercise 6}
+	\subsection{Let $N$ be an arbitrary NFA with $k$ states. Explain why if $L(N) \neq \emptyset$, then there is a word of length $\le k$ in $L(N)$.}
+	If $L(N)\neq \emptyset$, then $N$ must recognize some word. This means that there must be a path from the starting state to some accepting state given by a set of transitions. More formally, take any $w\in L(N)$,where $w = w_1w_2\dots w_m$. There must be a sequence of states $r_0,r_1,\dots,r_m$, such that $r_0$ is the starting state, $r_m$ is an accepting state, and for all $0 \leq i < m$, $r_{i+1}\in\delta(r_i,w_{i+1})$. Now, if $m \leq k$, we are done. However, if $m > k$, then by the pigeonhole principle some state must be repeated. So, in the sequence $r_0,\dots r_x,\dots,r_x,\dots,r_m$,we can remove everything between the $r_x$s, including one of the $r_x$s themselves, and we can keep doing this procedure until the length of the sequence becomes $\leq k$. Now, this sequence exactly describes an input word of length $\leq k$ that is in $L(N)$.
+	\subsection{Led $D$ be an arbitrary DFA with $k > 1$ states. Give a counterexample to the claim that there is a DFA $D'$ with $k-1$ states, such that $L(D') = L(D)$.}
+	Let D be the DFA described by the following state diagram (assume the alphabet is $\set{a,b}$):\\
+	\begin{tikzpicture}[->, >=Stealth, auto, node distance=2.5cm]
+		\node[initial,state] (qstart) {$q_{start}$};
+		%\node[state] (q2) [right of=qstart] {$q_2$};
+		\node[state, accepting] (qend) [right of=qstart] {$q_{end}$};
+
+		\path (qstart) edge node {$a$} (qend);
+		\path (qstart) edge [loop above] node{$b$} (qstart);
+		\path (qend) edge [loop above] node {$a,b$} (qend);
+
+		%\path (qstart) edge node {$a \cup b \cup abb$} (q2);
+		%\path (q2) edge node [below]{$\varepsilon\cup b$} (qend);
+		%\path (q2) edge [loop below] node {$a\cup b \cup bbb$} (q2);
+	\end{tikzpicture}\\
+	This DFA only recognizes words that contain at least one $a$ inside. If we were to construct a DFA with $k-1$ states, it would have to have 1 state. This state could either be accepting, or not. Which means $D'$ would either accept every word, or no words. Neither of which are equivalent to $D$.
 	\section{Bonus Exercise}
 
 \end{document}
