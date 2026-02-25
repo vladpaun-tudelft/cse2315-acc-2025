@@ -83,18 +83,60 @@
 		A &\to bA\mid AA\\
 		B &\to AS\mid SA\mid \eps \\
 	\end{align*}
-	Convert G into Chomsky normal form.
+	Convert G into Chomsky normal form.\\
+	First, we add a new start variable.
+	\begin{align*}
+		S_0 &\to S\\
+		S &\to bB\mid abB\\
+		A &\to bA\mid AA\\
+		B &\to AS\mid SA\mid \eps \\
+	\end{align*}
+	Then, we remove the $\eps$-rules.
+	\begin{align*}
+		S_0 &\to S\\
+		S &\to bB\mid abB \mid \textbf{ b $\mid$ ab} \\
+		A &\to bA\mid AA\\
+		B &\to AS\mid SA\mid \textcolor{gray}{\eps}\\
+	\end{align*}
+	Third, we remove all unit rules.
+	\begin{align*}
+		S_0 &\to \textcolor{gray}{S} \mid \textbf{bB $\mid$ abB $\mid$ b $\mid$ ab}\\
+		S &\to bB\mid abB \mid b \mid ab \\
+		A &\to bA\mid AA\\
+		B &\to AS\mid SA\\
+	\end{align*}
+	Convert the remaining rules into proper form.
+	\begin{align*}
+		S_0 &\to VB \mid TB \mid b \mid UV\\
+		S &\to VB\mid TB \mid b \mid UV \\
+		A &\to VA\mid AA\\
+		B &\to AS\mid SA\\
+		T &\to UV\\
+		U &\to a\\
+		V &\to b\\
+	\end{align*}
 	\section{Exercise 4}
 	Let $L$ be the set of all TUDON words.
 	\subsection{Give a CFG $G$ such that $L(G) = L$, using no more than 6 variables and 9 + 26 rules.}
+	Let $G = (\set{S,T,U,V,X},\set{<,>,:,;,a,b,\dots,z},R,S)$, with $R$ containing the following rules:
+	\begin{align*}
+		S &\to <T>\\
+		T &\to U:VX\\
+		X &\to ;T \mid \eps\\
+		U &\to \Alphabet U \mid \eps\\
+		V &\to S \mid U
+	\end{align*}
+	Where $\Alphabet$ refers to any character $a,b,\dots,z$
 	\subsection{Explain why your grammar generates $L$}
+	So basically the start variable makes one of those dictionaries, and then defers to a new variable for the contents of the dict. Then that variable T makes a key value pair, appended with an X. Then the X can be nothing, or a semicolon and then another T. And then the actual key is any number of alphabet characters, and the value is also any number of alphabet characters or another dictionary.
 	\subsection{Is your grammar ambiguous? Give an example or an argument why not.}
+	The grammar is not ambiguous, the only part where it could be ambiguous, is when creating the key-value pairs in the dictionary, you could substitute them and creating them in different orders, but I take care of that by appending them one by one do what is already there. This way, there is no ambiguous word.
 	\section{Exercise 5}
 	Let the operator $@$ be defined as $A@=\set{a^{|w|}\mid w\in A}$. Prove that regularity is closed under $@$.
 	\begin{proof}
 		Let $A$ be a regular language. We will prove that $A@$ is also regular.\\
 		Since $A$ is regular, there is a DFA $M=(Q,\Alphabet,\delta,q_0,F)$ such that $L(M) = A$. Now we will build the NFA $M'=(Q,\set{a},\Delta,q_0,F)$, where $\Delta(q,a) = \set{\delta(q,x)\mid x\in\Alphabet}$. In other words, take $M$ and replace every symbol on transition arrows with $a$.\\
-		Next, show that they are equivalent kinda. TODO.
+		Next, we must show that the set of words reachable in $M'$ by reading $n$ $a$s from the input is equivalent (meaning the same lengths of words) to the set of words reachable in $M$ by reading any $n$ characters from an input word. This can be shown using induction. It is left as an exercise to the reader.
 	\end{proof}
 	\section{Exercise 6}
 	\subsection{Let $N$ be an arbitrary NFA with $k$ states. Explain why if $L(N) \neq \emptyset$, then there is a word of length $\le k$ in $L(N)$.}
