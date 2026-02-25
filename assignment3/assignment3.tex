@@ -73,8 +73,35 @@
 	\end{align*}
 
 	\subsection{Describe the set $L(G)$ in your own words.}
+	$L(G)$ includes the words $ca$ and $cb$ as well as antipalindromes formed of $a$s and $b$s with a $c$ appended to it.
 	\subsection{Construct a PDA $M$ such that $L(M)=L(G)$. Use no more than 8 states.}
+	\begin{tikzpicture}[->, >=Stealth, auto, node distance=2.5cm]
+		\node[initial,state] (q1) {$q_1$};
+		\node[state] (q2) [right of=q1] {$q_2$};
+		\node[state] (q3) [below of=q1] {$q_3$};
+		\node[state,accepting] (q4) [right of=q2] {$q_4$};
+		\node[state] (q5) [right of=q3] {$q_5$};
+		\node[state,accepting] (q6) [right of=q5] {$q_6$};
+
+
+		\path (q1) edge node {$c,\eps\to\eps$} (q2);
+		\path (q2) edge node {$a|b,\eps\to\eps$} (q4);
+		\path (q1) edge node {$\eps,\eps\to\$$} (q3);
+
+		\path (q3) edge node {$\eps,\eps\to\eps$} (q5);
+		\path (q3) edge [loop below]
+		node {$\begin{aligned}
+				a,\eps &\to a \\
+				b,\eps &\to b
+			\end{aligned}$} (q3);
+		\path (q5) edge [loop below] node {$\begin{aligned}
+				a,b &\to \eps \\
+				b,a &\to \eps
+			\end{aligned}$} (q5);
+		\path (q5) edge node {$c,\$\to\eps$} (q6);
+	\end{tikzpicture}
 	\subsection{Explain how your PDA works.}
+	So the PDA first nondeterministically chooses if it's in the $c$ first or $c$ last case. In the c first case, it doesn't use the stack, it just reads a $c$ and then an $a$ or a $b$ from the input. In the other case, it starts pushing the characters it sees in the input and then nondeterministically decides where the middle of the word is. After the middle, it pops characters from the stack and makes sure that they are the opposite of what it s reading from the input. At the end, the stack should be empty and the last character should be a $c$.
 
 	\section{Exercise 3}
 	Consider the following rules $R$ of a CFG $G = (\set{S,A,B},\set{a,b},R,S)$:
@@ -136,7 +163,7 @@
 	\begin{proof}
 		Let $A$ be a regular language. We will prove that $A@$ is also regular.\\
 		Since $A$ is regular, there is a DFA $M=(Q,\Alphabet,\delta,q_0,F)$ such that $L(M) = A$. Now we will build the NFA $M'=(Q,\set{a},\Delta,q_0,F)$, where $\Delta(q,a) = \set{\delta(q,x)\mid x\in\Alphabet}$. In other words, take $M$ and replace every symbol on transition arrows with $a$.\\
-		Next, we must show that the set of words reachable in $M'$ by reading $n$ $a$s from the input is equivalent (meaning the same lengths of words) to the set of words reachable in $M$ by reading any $n$ characters from an input word. This can be shown using induction. It is left as an exercise to the reader.
+		Next, we must show that the set of states reachable in $M'$ by reading $n$ $a$'s from the input is equivalent to the set of states reachable in $M$ by reading any $n$ characters from an input word. This can be shown using induction. It is left as an exercise to the reader.
 	\end{proof}
 	\section{Exercise 6}
 	\subsection{Let $N$ be an arbitrary NFA with $k$ states. Explain why if $L(N) \neq \emptyset$, then there is a word of length $\le k$ in $L(N)$.}
