@@ -1,0 +1,176 @@
+\documentclass[a4paper,11pt]{article}
+
+% ---------- Packages ----------
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning,arrows.meta}
+
+% ---------- Theorem Environments ----------
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+
+% ---------- Custom Commands ----------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Alphabet}{\Sigma}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+
+% ---------- Section Style ----------
+\renewcommand{\thesubsection}{(\alph{subsection})}
+\renewcommand{\thesection}{}
+
+% ---------- Algorithm Style ----------
+\algrenewcommand\algorithmicrequire{\textbf{Input:}}
+\algrenewcommand\algorithmicensure{\textbf{Output:}}
+
+% ---------- Title Info ----------
+\title{\textbf{CSE2315 --- Assignment 4}}
+\author{Vlad Paun \\ 6152937}
+\date{\today}
+
+% ---------- Document ----------
+\begin{document}
+
+	\maketitle
+
+	\section{Exercise 1}
+	Old exam question, endterm 2022--2023: Given the Turing Machine $M$ below. You may assume the tape is bounded on the left.
+
+	You may assume that any missing transitions lead to the reject state, which has been left out.
+
+	\begin{center}
+		\begin{tikzpicture}[->, >=Stealth, auto, node distance=3.5cm]
+			\node[initial,state] (q0) {$q_0$};
+			\node[state] (q1) [right of=q0] {$q_1$};
+			\node[accepting,state] (qacc) [right of=q1] {$q_{\mathrm{acc}}$};
+
+			\path
+			(q0) edge[bend left] node[above] {$a \to \sqcup, L$} (q1)
+			(q1) edge[bend left] node[below] {$a \to L$} (q0)
+			(q0) edge[loop above] node {$b \to R$} (q0)
+			(q1) edge[loop above] node {$b \to R$} (q1)
+			(q1) edge node {$\sqcup \to R$} (qacc)
+			(q0) edge[bend right=50] node[below] {$\sqcup \to R$} (qacc);
+		\end{tikzpicture}
+	\end{center}
+
+	\subsection{Give two words that are in $L(M)$ and two words that are not. For at least one of each, explain why by giving the sequence of configurations the machine goes through. All words should be at least length 2.}
+
+	\vspace{1cm}
+
+	\subsection{Describe the language $L(M)$ (you can do this informally or in set-builder notation).}
+
+	\vspace{1cm}
+
+	\subsection{Is $L(M)$ decidable? Explain your answer.}
+
+	\vspace{1cm}
+
+	\section{Exercise 2}
+	Suppose we have the following language over the alphabet $\Alphabet = \set{1,\dots,9,\#}$:
+	\[
+	L = \set{v\#w \mid v,w \in \set{1,\dots,9}^* \land \exists a,b \in \set{1,\dots,9} : c_a(v) = c_b(w)}
+	\]
+	where $c_x(y)$ denotes the number of occurrences of symbol $x$ in word $y$.
+
+	Give a high-level description of a nondeterministic Turing machine that decides $L$.
+
+	\vspace{1cm}
+
+	\section{Exercise 3}
+	Suppose we have the following language over the alphabet $\Alphabet = \set{0,1,\#}$:
+	\[
+	L = \set{0^n\#1^m \mid n > m}
+	\]
+
+	Describe an order in which we can enumerate $L$. Does your order show that $L$ is decidable?
+
+	\vspace{1cm}
+
+	\section{Exercise 4}
+	Consider the following language:
+	\[
+	L = \set{\langle v_1,v_2,\dots,v_k,D\rangle \mid v_1,v_2,\dots,v_k \in \set{0,1}^* \text{ and $D$ is a DFA with } L(D)=K,\text{ where }K=\set{v_1,v_2,\dots,v_k}}
+	\]
+
+	Is the following Turing machine $M$ a decider for $L$? Explain.
+
+	\begin{quote}
+		$M =$ ``On input $w = \langle v_1,v_2,\dots,v_j,D\rangle$:
+		\begin{enumerate}[label=\arabic*.]
+			\item For $i = 1,\dots,j$:
+			\begin{enumerate}[label=\alph*.]
+				\item Run $D$ on $v_i$.
+				\item If $D$ accepts, reject.
+			\end{enumerate}
+			\item If $D$ has rejected all $v_i$, accept.''
+		\end{enumerate}
+	\end{quote}
+
+	\vspace{1cm}
+
+	\section{Exercise 5}
+	Old exam question, resit 22--23.
+
+	\subsection{Given a Turing Machine $M$ with input alphabet $\Alphabet$ and tape alphabet $\Gamma$. Is it possible for $|\Gamma| = |\Alphabet| + 2$? If yes, draw a valid TM $M$ for which this holds. If not, explain why not.}
+
+	\vspace{1cm}
+
+	\subsection{Can a Turing Machine contain just a single state? If yes, draw a valid Turing Machine with a single state. If not, explain why not.}
+
+	\vspace{1cm}
+
+	\section{Exercise 6}
+	Revision, old exam question midterm 18--19: Consider the following language, where the alphabet $\Alphabet = \set{a,b}$:
+	\[
+	L = \set{b^n a b v \mid v \in \Alphabet^*,\ n \geq 1,\ \text{and } |v| = 8n + 4}
+	\]
+
+	This language is not regular. Prove this using the pumping lemma in at most 20 lines.
+
+	\vspace{1cm}
+
+	\section{Exercise 7}
+	Revision, variation on old exam question midterm 20--21:
+
+	Given the GNFA $G$ depicted below. If we rip $q_2$ out of $G$ using the procedure described in Sipser, what non-empty transitions would be left in $G$? Make sure to describe all transitions.
+
+	\begin{center}
+		\begin{tikzpicture}[->, >=Stealth, auto, node distance=3cm]
+			\node[initial,state] (qs) {$q_s$};
+			\node[state] (q1) [right of=qs] {$q_1$};
+			\node[state] (q2) [below of=q1] {$q_2$};
+			\node[accepting,state] (qa) [right of=q1] {$q_a$};
+
+			\path
+			(qs) edge node {$\eps$} (q1)
+			(q1) edge[loop above] node {$bba$} (q1)
+			(q1) edge node {$b$} (q2)
+			(q2) edge node {$a$} (q1)
+			(q2) edge node {$abb$} (qa)
+			(q1) edge node {$\eps$} (qa);
+		\end{tikzpicture}
+	\end{center}
+
+	\vspace{1cm}
+
+	\section{Bonus Exercise}
+
+\end{document}

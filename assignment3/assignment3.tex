@@ -163,7 +163,7 @@
 	\begin{proof}
 		Let $A$ be a regular language. We will prove that $A@$ is also regular.\\
 		Since $A$ is regular, there is a DFA $M=(Q,\Alphabet,\delta,q_0,F)$ such that $L(M) = A$. Now we will build the NFA $M'=(Q,\set{a},\Delta,q_0,F)$, where $\Delta(q,a) = \set{\delta(q,x)\mid x\in\Alphabet}$. In other words, take $M$ and replace every symbol on transition arrows with $a$.\\
-		Next, we must show that the set of states reachable in $M'$ by reading $n$ $a$'s from the input is equivalent to the set of states reachable in $M$ by reading any $n$ characters from an input word. This can be shown using induction. It is left as an exercise to the reader.
+		Next, we must show that the set of states reachable in $M'$ by reading $n$ $a$'s from the input is equivalent to the set of states TU	reachable in $M$ by reading any $n$ characters from an input word. This can be shown using induction. It is left as an exercise to the reader.
 	\end{proof}
 	\section{Exercise 6}
 	\subsection{Let $N$ be an arbitrary NFA with $k$ states. Explain why if $L(N) \neq \emptyset$, then there is a word of length $\le k$ in $L(N)$.}
