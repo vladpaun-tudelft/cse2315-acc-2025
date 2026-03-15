@@ -1,0 +1,150 @@
+\documentclass[a4paper,11pt]{article}
+
+% ---------- Packages ----------
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning,arrows.meta}
+
+% ---------- Theorem Environments ----------
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+
+% ---------- Custom Commands ----------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Alphabet}{\Sigma}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+
+% ---------- Section Style ----------
+\renewcommand{\thesubsection}{(\alph{subsection})}
+\renewcommand{\thesection}{}
+
+% ---------- Algorithm Style ----------
+\algrenewcommand\algorithmicrequire{\textbf{Input:}}
+\algrenewcommand\algorithmicensure{\textbf{Output:}}
+
+% ---------- Title Info ----------
+\title{\textbf{CSE2315 --- Assignment 5}}
+\author{Vlad Paun \\ 6152937}
+\date{\today}
+
+% ---------- Document ----------
+\begin{document}
+
+	\maketitle
+
+	\section{Exercise 1}
+	Consider the alphabet $\Alphabet = \set{a,b,c}$ and the language
+	\[
+	L = \set{a^k b^k c^k \mid k \geq 1}.
+	\]
+
+	Give a high-level description for a three-tape enumerator that enumerates $L$. You may want to use the second and third tapes as counters. You do not have to give implementation details of the counters.
+
+	\vspace{1cm}
+
+	\section{Exercise 2}
+	Old exam question endterm 23--24:
+
+	\subsection{Give a Turing Machine $M$ that is not a decider such that $L(M)$ is decidable.}
+
+	\vspace{1cm}
+
+	\subsection{Explain why $M$ is not a decider.}
+
+	\vspace{1cm}
+
+	\subsection{Explain why $L(M)$ is decidable.}
+
+	\vspace{1cm}
+
+	\section{Exercise 3}
+	Old exam question resit 20--21: Let
+	\[
+	MIA_{TM} = \set{\langle M_1, M_2\rangle \mid L(M_1)\cap L(M_2)\neq \emptyset}.
+	\]
+
+	Show that this is a recognizable language.
+
+	\vspace{1cm}
+
+	\section{Exercise 4}
+	In the game of chess, consider an intermediate board configuration, and suppose it is white's move. We know that white is either guaranteed to win or not. Let
+	\[
+	L = \set{w \mid w \text{ represents a board configuration, and white is guaranteed to win if it is white's move and white plays optimally}}.
+	\]
+
+	Is $L$ recognizable, decidable, or neither? Explain.
+
+	\vspace{1cm}
+
+	\section{Exercise 5}
+	Revision, old exam question, midterm 21--22: Given a DTM $M$ with $\Alphabet = \set{a,b}$ such that:
+	\begin{itemize}
+		\item $M$ has no transition to its $q_{\mathrm{reject}}$, i.e. the reject state is an unreachable state,
+		\item $L(M) = \set{w \in \Alphabet^* \mid w \text{ starts with an } a}$.
+	\end{itemize}
+
+	Is $M$ a decider, not a decider, or can we not conclude that? Explain your answer.
+
+	\vspace{1cm}
+
+	\section{Exercise 6}
+	Old exam question resit 20--21:
+
+	In a log of a scheduler, it is noted down when a request for a task is given, and when an action is done to do that task. Requests are noted down with $r$, actions with $a$. A log is a final log if all tasks have been done. Thus, a final log can be described by the language of words where every $r$ has a corresponding $a$ that appears later in the string, formally given as
+	\[
+	L = \set{w \mid w \text{ has an equal amount of $r$'s and $a$'s and the $i$th $a$ appears later in the string than the $i$th $r$, for each } i \in (1, |w|/2)}.
+	\]
+
+	Give an informal description of a Turing machine with the alphabet $\set{r,a}$ that decides this language. Use a maximum of 15 lines.
+
+	As an example:
+	\[
+	\texttt{rarraa} \in L \qquad \text{and} \qquad \texttt{raaarr} \notin L
+	\]
+
+	\vspace{1cm}
+
+	\section{Exercise 7}
+	Revision, old exam question midterm 19--20: Consider the following rules $R$ of a CFG
+	\[
+	G = (V,\Alphabet,R,S),
+	\]
+	with
+	\[
+	V = \set{S,A,B}:
+	\]
+	\begin{align*}
+		S &\to ASA \mid Ba\\
+		A &\to bB \mid S\\
+		B &\to c \mid b \mid \eps
+	\end{align*}
+
+	\subsection{Give a valid set $\Alphabet$ such that $|\Alphabet| = 5$.}
+
+	\vspace{1cm}
+
+	\subsection{Convert $G$ into Chomsky Normal Form (CNF). Use the procedure from Sipser, showing intermediate steps.}
+
+	\vspace{1cm}
+
+
+\end{document}
