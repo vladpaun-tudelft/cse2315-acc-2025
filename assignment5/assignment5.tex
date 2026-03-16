@@ -58,7 +58,18 @@
 
 	Give a high-level description for a three-tape enumerator that enumerates $L$. You may want to use the second and third tapes as counters. You do not have to give implementation details of the counters.
 
-	\vspace{1cm}
+
+	\textbf{Answer: }Use Tape~1 as the printer and Tapes~2 and~3 as counters.
+	Tape~2 stores the current value of $k$, initially $k=1$.
+
+	In each iteration, the machine copies $k$ from Tape~2 to Tape~3 and uses
+	Tape~3 to print $k$ copies of $a$, $b$, and $c$ on the printer tape,
+	producing the string $a^k b^k c^k$. It then increments $k$ on Tape~2.
+
+	Repeating this process prints $abc, aabbcc, aaabbbccc, \dots$, thus
+	enumerating all strings in $L = \{a^k b^k c^k \mid k \ge 1\}$.
+
+
 
 	\section{Exercise 2}
 	Old exam question endterm 23--24:
