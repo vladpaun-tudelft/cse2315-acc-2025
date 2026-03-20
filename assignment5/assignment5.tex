@@ -76,15 +76,15 @@
 
 	\subsection{Give a Turing Machine $M$ that is not a decider such that $L(M)$ is decidable.}
 
-	\vspace{1cm}
+	Let $M$ be a Turing machine that accepts exactly the strings $\set{0^k1^k | k>0}$, and loops forever on every other input.
 
 	\subsection{Explain why $M$ is not a decider.}
 
-	\vspace{1cm}
+	Then $M$ is not a decider, as it does not halt on every input. It always either halts and accepts or loops forever.
 
 	\subsection{Explain why $L(M)$ is decidable.}
 
-	\vspace{1cm}
+	However, $L(M) = \set{0^k1^k | k>0}$ is decidable as shown in previous exercises.
 
 	\section{Exercise 3}
 	Old exam question resit 20--21: Let
@@ -94,17 +94,20 @@
 
 	Show that this is a recognizable language.
 
+	\textbf{Answer: }We construct a Turing machine $M$ that simulates $M_1$ and $M_2$ and runs every word in the alphabets language on both $M_1$ and $M_2$ (using dovetailing) and accepts if at any point the same word is accepted by both $M_1$ and $M_2$
 	\vspace{1cm}
 
 	\section{Exercise 4}
 	In the game of chess, consider an intermediate board configuration, and suppose it is white's move. We know that white is either guaranteed to win or not. Let
-	\[
-	L = \set{w \mid w \text{ represents a board configuration, and white is guaranteed to win if it is white's move and white plays optimally}}.
-	\]
+	\begin{align*}
+		L = \{w \mid w \text{ represents a board configuration, and white is guaranteed to win}&\\
+		\text{if it is white's move and white plays optimally}&\}.
+	\end{align*}
+
 
 	Is $L$ recognizable, decidable, or neither? Explain.
 
-	\vspace{1cm}
+	\textbf{Answer: }$L$ is decidable for it is finite. Chess has only a finite number of board configurations and $L$ represents a subset of those. We can simply create a Turing machine $M$ that has (withing it's configuration) all the words in $L$ hardcoded.
 
 	\section{Exercise 5}
 	Revision, old exam question, midterm 21--22: Given a DTM $M$ with $\Alphabet = \set{a,b}$ such that:
@@ -115,15 +118,17 @@
 
 	Is $M$ a decider, not a decider, or can we not conclude that? Explain your answer.
 
-	\vspace{1cm}
+	\textbf{Answer: }If an input word $w$ starts with a $b$, $M$ must never accept that word. But it also cannot go to it's reject state. So it must reject by looping. This means $M$ doesn't halt on every input so it is not a decider.
 
 	\section{Exercise 6}
 	Old exam question resit 20--21:
 
 	In a log of a scheduler, it is noted down when a request for a task is given, and when an action is done to do that task. Requests are noted down with $r$, actions with $a$. A log is a final log if all tasks have been done. Thus, a final log can be described by the language of words where every $r$ has a corresponding $a$ that appears later in the string, formally given as
-	\[
-	L = \set{w \mid w \text{ has an equal amount of $r$'s and $a$'s and the $i$th $a$ appears later in the string than the $i$th $r$, for each } i \in (1, |w|/2)}.
-	\]
+	\begin{align*}
+		L = \{w \mid w &\text{ has an equal amount of $r$'s and $a$'s}\\
+		&\text{and the $i$th $a$ appears later in the string than the $i$th $r$, for each } i \in (1, |w|/2)\}.
+	\end{align*}
+
 
 	Give an informal description of a Turing machine with the alphabet $\set{r,a}$ that decides this language. Use a maximum of 15 lines.
 
@@ -132,7 +137,17 @@
 	\texttt{rarraa} \in L \qquad \text{and} \qquad \texttt{raaarr} \notin L
 	\]
 
-	\vspace{1cm}
+	\textbf{Answer: }This is just the valid parenthesis problem, but with $a$'s and $r$'s. Let Turing machine $M$:\\
+	$M$ = "On input $w$:
+	\begin{enumerate}
+		\item Move to the end of the input.
+		\item Write a special character $\$$ on the tape after the last input character and consider everything after the $\$$ as a stack.
+		\item Go back to the first not crossed off character in the input and cross it off.
+		\item If all input characters are crossed off, accept if the stack is empty, reject otherwise.
+		\item If it's an $r$, push a special character $\#$ on the stack.
+		\item If it's an $a$, pop from the stack. If the popped character is the $\$$, reject.
+		\item Go to 3.
+	\end{enumerate}
 
 	\section{Exercise 7}
 	Revision, old exam question midterm 19--20: Consider the following rules $R$ of a CFG
@@ -151,11 +166,41 @@
 
 	\subsection{Give a valid set $\Alphabet$ such that $|\Alphabet| = 5$.}
 
-	\vspace{1cm}
+	$\Alphabet=\set{a,b,c,d,e}$
 
 	\subsection{Convert $G$ into Chomsky Normal Form (CNF). Use the procedure from Sipser, showing intermediate steps.}
 
-	\vspace{1cm}
+	First, we add a new start variable.
+	\begin{align*}
+		S_0 &\to S\\
+		S &\to ASA \mid Ba\\
+		A &\to bB \mid S\\
+		B &\to c \mid b \mid \eps
+	\end{align*}
+	Then, we remove the $\eps$-rules.
+	\begin{align*}
+		S_0 &\to S\\
+		S &\to ASA \mid Ba \mid \textbf{a}\\
+		A &\to bB \mid S \mid \textbf{b}\\
+		B &\to c \mid b \mid \textcolor{gray}{\eps}
+	\end{align*}
+	Third, we remove all unit rules.
+	\begin{align*}
+		S_0 &\to \textcolor{gray}{S}\mid \textbf{ASA $\mid$ Ba $\mid$ a}\\
+		S &\to ASA \mid Ba \mid a\\
+		A &\to bB \mid \textcolor{gray}{S}\mid \textbf{ASA $\mid$ Ba $\mid$ a} \mid b\\
+		B &\to c \mid b
+	\end{align*}
+	Convert the remaining rules into proper form.
+	\begin{align*}
+		S_0 &\to TA \mid BU \mid a\\
+		S &\to TA \mid BU \mid a\\
+		A &\to VB \mid TA \mid BU \mid a \mid b\\
+		B &\to c \mid b\\
+		T &\to AS\\
+		U &\to a\\
+		V &\to b
+	\end{align*}
 
 
 \end{document}
