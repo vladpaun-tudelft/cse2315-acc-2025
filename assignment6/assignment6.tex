@@ -58,7 +58,15 @@
 
 	Show that $E_{\mathrm{GNFA}}$ is decidable. You are allowed to make use of the deciders implied by the text in the book (e.g., Section 4.1).
 
-	\vspace{1cm}
+	\textbf{Answer: }We show that $E_{GNFA}$ is decidable by giving decider $M$ as follows:
+	\begin{quote}
+		$M=$ "On input $\langle G\rangle$:
+		\begin{enumerate}
+			\item Convert GNFA $G$ to an equivalent DFA $D$
+			\item Run the decider for $E_{DFA}$ on $\langle D\rangle$
+			\item If the decider accepts, accept. Otherwise, reject.
+		\end{enumerate}
+	\end{quote}
 
 	\section{Exercise 2}
 	Consider the language
@@ -68,14 +76,14 @@
 
 	Is this language decidable? Explain.
 
-	\vspace{1cm}
+	\textbf{Answer: }$L$ is decidable. A TM must move the head every step. So we can simulate $M$ for at most  steps. If it halts before reaching this limit we can accept. Otherwise, $M$ is either looping or it moves the head more that $|w|^2$ steps, so we can reject.
 
 	\section{Exercise 3}
 	Old exam question, endterm 20--21: Show the claim is true or give a counterexample and explanation to show the claim is false, starting your answer with either \textbf{True} or \textbf{False}.
 
 	If there is a Turing reduction from $L$ to $E_{\mathrm{CFG}}$, then $\overline{L}$ is Turing-recognisable.
 
-	\vspace{1cm}
+	\textbf{True.} If there is a reduction from $L$ to $E_{CFG}$, that means that $L$ is no harder than $E_{CFG}$. So if the latter is decidable, which it is, then so is the former. So $L$ is also decidable. Decidability is closed under complement, therefore $\overline{L}$ is also decidable. Any decidable language is also Turing-recognizable.
 
 	\section{Exercise 4}
 	Old exam question, endterm 22--23:
@@ -89,7 +97,19 @@
 
 	Prove $L$ is undecidable, using a Turing reduction $E_{\mathrm{TM}} \leq_T L$.
 
-	\vspace{1cm}
+	\begin{proof}
+		Proof by contradiction.\\
+		Assume for the sake of contradiction that $L$ is decidable. Then, there exists TM $S$ that decides $L$. We can use $M$ to show that $E_{TM}$ is also decidable by constructing decider $R$:
+		\begin{quote}
+			$R=$ "On input $\langle M\rangle$:
+			\begin{enumerate}
+				\item Scan through the input and find the accept state of $M$, $q_{accept}$
+				\item Run $S$ on $\langle M,q_{accept}\rangle$
+				\item If $S$ accepts, accept, otherwise reject
+			\end{enumerate}
+		\end{quote}
+		Thus, if this machine accepts, the accept state of the input is useless so its language is empty and vice versa. So $R$ correctly decides $E_{TM}$, which is a contradiction with theorem $5.2$
+	\end{proof}
 
 	\section{Exercise 5}
 	Old exam question, resit 17--18: Suppose we have the following language
