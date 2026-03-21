@@ -140,11 +140,18 @@
 
 	\subsection{What should be done in steps 3 and 4 of $M'$?}
 
-	\vspace{1cm}
+	3. Generate a grammar $G$ with one rule: $S\to a$ and starting variable $S$.\\
+	4. Output grammar $G$ on the tape.
 
 	\subsection{Provide a proof showing $f$ satisfies the requirements of a mapping reduction.}
 
-	\vspace{1cm}
+	\begin{proof}
+		$F$ computes $f$, so $f$ is a computable function. We also need to show that it is reliable. To this end, we look at two cases:
+		\begin{itemize}
+			\item If $\langle M,w\rangle\in HALT_{TM}$, then $M$ halts on $w$ and $M'$ also halts and correctly writes the grammar $G$ on input $a$.
+			\item If $\langle M,w\rangle\notin HALT_{TM}$, then $M$ never halts on $w$, so $M'$ will never write the correct output on the tape.
+		\end{itemize}
+	\end{proof}
 
 	\section{Exercise 6}
 	Old exam question, resit 20--21:
