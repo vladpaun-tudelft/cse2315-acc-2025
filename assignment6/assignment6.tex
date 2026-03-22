@@ -163,15 +163,34 @@
 	& w \in (L(M_1)\cap L(M_2)) \cup (L(M_1)\cap L(M_3)) \cup (L(M_2)\cap L(M_3)) \}.
 	\end{align*}
 
-	\vspace{1cm}
+	\textbf{Answer: }We show this by constructing a TM $R$ that recognizes $MIA_{TM}$:
+	\begin{quote}
+		$R=$ "On input $\langle M_1,M_2,M_3,w \rangle$:
+		\begin{enumerate}
+			\item Simulate $M_1,M_2,M_3$ on $w$ in parallel
+			\item As soon as 2 of these machines accept, accept.
+			\item If 2 or more reject, reject."
+		\end{enumerate}
+	\end{quote}
 
 	\subsection{Show that $MIA_{TM}$ is undecidable by constructing a Turing reduction from $A_{TM}$.}
-
-	\vspace{1cm}
+	\begin{proof}
+		Assume for the sake of contradiction that $MIA_{TM}$ is decidable. Therefore, there exists TM $S$ that decides $MIA_{TM}$. We then construct TM $N$ as follows:
+		\begin{quote}
+			$N=$ "On input $\langle M,w \rangle$:
+			\begin{enumerate}
+				\item Create TM $M_{none}$ that instantly rejects any input
+				\item Create TM $M_{all}$ that instantly accepts any input
+				\item Run $S$ on $\langle M,M_{none},M_{all},w \rangle$
+				\item If it accepts, accept, otherwise reject."
+			\end{enumerate}
+		\end{quote}
+		We can see that from the description of $MIA_{TM}$, $S$ accepts $w$ iff $M$ accepts $w$ and we have assumed that it is a decider so it always halts. Thus, $N$ is a decider for $A_{TM}$, which is a contradiction. Thus, our assumption that $MIA_{TM}$ is decidable must be false, so, by contradiction we have shown that $MIA_{TM}$ is undecidable.
+	\end{proof}
 
 	\subsection{Show that $MIA_{TM}$ is not co-Turing recognizable.}
 
-	\vspace{1cm}
+	We have shown that $MIA_{TM}$ is Turing recognizable. If $\overline{MIA_{TM}}$ were also Turing recognizable, then $MIA_{TM}$ would be decidable, which we have shown it is not. Therefore, $\overline{MIA_{TM}}$ must be Turing unrecognizable, so $MIA_{TM}$ is not co-Turing recognizable.
 
 	\section{Exercise 7}
 	Revision, old exam question, midterm 19--20: Assume that we define an expanded NFA model by imposing the additional requirement that $|F|=1$, and we call this an SNFA.
@@ -179,11 +198,26 @@
 	\subsection{ Are the SNFA and NFA models equally expressive?}
 	Start your answer with ``Yes'' or ``No''. If you answer yes, explain how an arbitrary SNFA can be rewritten as an NFA and vice versa. If you answer no, give an example of a language that can be accepted by an NFA, but not by an SNFA or vice versa.
 
-	\vspace{1cm}
+	\textbf{Yes.} An $SNFA$ is a special case of an $NFA$, so an arbitrary $SNFA$ is already an $NFA$. To transform an arbitrary $NFA$ to an $SNFA$, we add a new accepting state, we take all the old accepting states and make them not-accepting and add an epsilon-transition to the new single accepting state.
 
 	\subsection{Give an NFA of at most 4 states that accepts the word \texttt{mia} and rejects the word \texttt{maya}. No other restrictions on the language apply. A transition diagram suffices.}
 
-	\vspace{1cm}
+	\begin{center}
+		\begin{tikzpicture}[->, >=Stealth, auto, node distance=3cm]
+			\node[initial,state] (q0) {$q_0$};
+			\node[state] (q1) [right of=q0] {$q_1$};
+			\node[state] (q2) [right of=q1] {$q_2$};
+			\node[state,accepting] (q3) [right of=q2] {$q_3$};
+
+			\path
+			(q0) edge node {$m$} (q1)
+			(q1) edgenode {$i$} (q2)
+			(q2) edge node {$a$} (q3);
+
+		\end{tikzpicture}
+	\end{center}
+
+
 
 	\subsection{Consider the NFA $N$ depicted as:}
 
@@ -205,5 +239,27 @@
 	\end{center}
 
 	Using the method from Sipser and leaving out unreachable states, construct a new DFA $D$, such that $L(D)=L(N)$. A transition diagram and a short explanation suffice.
+
+	\begin{center}
+		\begin{tikzpicture}[->, >=Stealth, auto, node distance=3cm]
+			\node[initial,state] (q0) {$q_0$};
+			\node[state, accepting] (q1) [right of=q0] {$q_1$};
+
+			\node[state, accepting] (q01) [below of=q0] {$q_{01}$};
+
+
+			\node[state, accepting] (q012) [below of=q01] {$q_{012}$};
+			\node[state] (qnone) [below of=q1] {$q_{none}$};
+
+			\path (q0) edge node {$a$} (q1);
+			\path (q0) edge node {$b$} (q01);
+			\path (q1) edge node {$a$} (qnone);
+			\path (q1) edge node {$b$} (q012);
+			\path (q01) edge node {$a$} (q1);
+			\path (q01) edge node {$b$} (q012);
+			\path (qnone) edge [loop below] node {$a,b$} (qnone);
+			\path (q012) edge [loop right] node {$a,b$} (q012);
+		\end{tikzpicture}
+	\end{center}
 
 \end{document}
