@@ -84,7 +84,7 @@
 
 	For three languages $A, B, C$ if $A \leq_P B$ and $B \leq_m C$ with $C \in NPC$. Furthermore we know that there is a regular expression $R$ such that $L(R)=A$. Then $B \in P$.
 
-	\vspace{1cm}
+	\textbf{False. }Take for example $A=\emptyset$, which is regular, and $B=C=SAT$. $A$ is karp reducible to B by a function that takes any input ignores it and outputs $p\vee\overline{p}$. $B$ is equal to $C$ so it is mapping reducible to it by a function that does nothing. And finally $C\in NPC$. So all 3 conditions hold. However, $B=SAT\in NP$ and we assume $P\neq NP$.
 
 	\section{Exercise 3}
 	Old exam question:
@@ -139,7 +139,7 @@
 
 	Given two problems $A$ and $B$ that can be solved using a PDA, it is possible to create a Karp-reduction from $A$ to $B$ and vice versa.
 
-	\vspace{1cm}
+	\textbf{False. } Take for example $A=\Alphabet^*$ and $B=\emptyset$. Suppose there would exist a Karp reduction from $A$ to $B$, then there exists a computable function $f: \Alphabet^*\to \Alphabet^*$ such that $x\in A \iff f(x)\in B$. However, in our example $\forall x\in \Alphabet^*: x\in A$. So $\forall x\in \Alphabet^*: f(x)\in B$, but B must be empty. Therefore, no such function can exist.
 
 	\section{Exercise 6}
 	Revision, old exam question, resit 20--21: Given this NFA $N$, give a regular expression $R$ so that $L(N)=L(R)$.
