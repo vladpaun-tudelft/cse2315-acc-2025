@@ -1,0 +1,162 @@
+\documentclass[a4paper,11pt]{article}
+
+% ---------- Packages ----------
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning,arrows.meta}
+
+% ---------- Theorem Environments ----------
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+
+% ---------- Custom Commands ----------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Alphabet}{\Sigma}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+
+% ---------- Section Style ----------
+\renewcommand{\thesubsection}{(\alph{subsection})}
+\renewcommand{\thesection}{}
+
+% ---------- Algorithm Style ----------
+\algrenewcommand\algorithmicrequire{\textbf{Input:}}
+\algrenewcommand\algorithmicensure{\textbf{Output:}}
+
+% ---------- Title Info ----------
+\title{\textbf{CSE2315 --- Assignment 7}}
+\author{Vlad Paun \\ 6152937}
+\date{\today}
+
+% ---------- Document ----------
+\begin{document}
+
+	\maketitle
+
+	\section{Exercise 1}
+	Prove that the following problem is in NP:
+	\[
+	\set{(V,E) \mid \text{the graph } G=(V,E) \text{ contains a simple path } \pi \text{ such that } \forall v \in V : v \in \pi}
+	\]
+
+	In a different notation we would write:
+
+	\textbf{Name:} Hamiltonian Cycle (HAMC)\\
+	\textbf{Input:} A graph $G=(V,E)$.\\
+	\textbf{Question:} Is there a simple cycle $\pi$ in $G$ such that all vertices $v \in V$ are in that cycle?
+
+	\vspace{1cm}
+
+	\section{Exercise 2}
+	Old exam question, endterm 23--24:
+
+	For the following claim, if it is true: prove it. If it is false, give an explanation showing the claim is false and if possible a counterexample. Remember that the cover of our exam reads: ``Unless otherwise stated we assume that $P \neq NP$ and that $NP \neq EXP$.''
+
+	For three languages $A, B, C$ if $A \leq_P B$ and $B \leq_m C$ with $C \in NPC$. Furthermore we know that there is a regular expression $R$ such that $L(R)=A$. Then $B \in P$.
+
+	\vspace{1cm}
+
+	\section{Exercise 3}
+	Old exam question:
+
+	On the (famous?) British Quiz Show ``The University Challenge'', the following question was asked in the grand final of 2018/2019.
+
+	\begin{quote}
+		\ldots which problem in computing asks whether all problems with a solution verifiable in finite time, can also be solved in finite time.
+	\end{quote}
+
+	The contestants answer with ``P equals NP'' and the host answers back with ``Yes that's right, P versus NP, yes''.
+
+	Assuming this is the answer the host was looking for, what is wrong with the question he asks?
+
+	\vspace{1cm}
+
+	\section{Exercise 4}
+	Old exam question, resit 20--21:
+
+	\subsection{Prove that the following problem is in NP.}
+
+	\textbf{Name:} AmazingCustomChallenge\\
+	\textbf{Instance:} Given a set $L$ of lectures, a set of students $S$, a collection of subsets $T$ with $|T|=|S|$ so that $T_i$ is the set of lectures that student $i$ needs to attend, and an integer $K$.\\
+	\textbf{Question:} Is there a function $f:L \to \set{1,2,\dots,K}$ that maps lectures to time slots so that all students can attend all their lectures. In other words, is there a function so that there is no student who has to attend two lectures that are mapped to the same time slot.
+
+	\vspace{1cm}
+
+	\subsection{Not originally part of the exam question. Your answer to the previous question should have included time complexities. If we are to describe them in terms of $|I|$ where $I$ is an instance of the problem, what would be the complexity? (Hint: first think about $|I|$, is it $|S|$, or $|L|$, or some combination? How does $K$ factor into this?)}
+
+	\vspace{1cm}
+
+	\section{Exercise 5}
+	Variation on old exam question, resit 20--21:
+
+	Show the claim is true or false, starting your answer with either ``True'' or ``False''.
+
+	Given two problems $A$ and $B$ that can be solved using a PDA, it is possible to create a Karp-reduction from $A$ to $B$ and vice versa.
+
+	\vspace{1cm}
+
+	\section{Exercise 6}
+	Revision, old exam question, resit 20--21: Given this NFA $N$, give a regular expression $R$ so that $L(N)=L(R)$.
+
+	\begin{center}
+		\begin{tikzpicture}[->, >=Stealth, auto, node distance=2.4cm]
+			\node[initial,state] (q0) {$q_0$};
+			\node[state] (q1) [right of=q0] {$q_1$};
+			\node[state] (q2) [below of=q1] {$q_2$};
+			\node[state] (q3) [below of=q2] {$q_3$};
+			\node[state] (q4) [right of=q1] {$q_4$};
+			\node[state] (q5) [below of=q4] {$q_5$};
+
+			\path
+			(q0) edge node {$a,b,c$} (q1)
+			(q1) edge node {$b$} (q4)
+			(q4) edge node {$c$} (q5)
+			(q1) edge node {$a$} (q2)
+			(q2) edge node {$c$} (q3)
+			(q3) edge node {$a,b$} (q5)
+			(q5) edge[loop right] node {$a,b,c$} (q5);
+		\end{tikzpicture}
+	\end{center}
+
+	\vspace{1cm}
+
+	\section{Exercise 7}
+	Revision, old exam question, endterm 16--17: Suppose we have the following language:
+	\[
+	L = \set{\langle M,v,w \rangle \mid M \text{ outputs } w \text{ on the tape when run on input } v}
+	\]
+
+	Use a mapping reduction to prove that $L$ is undecidable. Give:
+
+	\subsection{A suitable problem to reduce from.}
+
+	\vspace{1cm}
+
+	\subsection{A suitable reduction function $f:\Sigma^* \to \Sigma^*$.}
+
+	\vspace{1cm}
+
+	\subsection{A proof showing $f$ satisfies the requirements of a mapping reduction.}
+
+	\vspace{1cm}
+
+	\section{Bonus Exercise}
+
+\end{document}
