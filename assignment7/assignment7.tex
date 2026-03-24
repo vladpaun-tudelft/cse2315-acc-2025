@@ -56,13 +56,26 @@
 	\set{(V,E) \mid \text{the graph } G=(V,E) \text{ contains a simple path } \pi \text{ such that } \forall v \in V : v \in \pi}
 	\]
 
-	In a different notation we would write:
-
+	In a different notation we would write:\\
 	\textbf{Name:} Hamiltonian Cycle (HAMC)\\
 	\textbf{Input:} A graph $G=(V,E)$.\\
 	\textbf{Question:} Is there a simple cycle $\pi$ in $G$ such that all vertices $v \in V$ are in that cycle?
 
-	\vspace{1cm}
+	\begin{proof}
+		The following is a verifier $V$ for $HAMC$:
+		\begin{quote}
+			$V=$ "On input $\langle G,c \rangle$:
+			\begin{enumerate}
+				\item Test whether $c$ is a tuple containing all nodes in $G$ exactly once.
+				\item For each $i$ between 1 and $m-1$ (where $m$ is the number of nodes in $G$): check that there is an edge in $G$ from node $c_i$ to $c_{i+1}$
+				\item Check that there is an edge in $G$ from $c_m$ to $c_1$
+			\end{enumerate}
+		\end{quote}
+
+		Stages $1.$ and $3.$ run exactly once, and stage $2.$ runs m times, so there is a polynomial amount of stages. We can easily see that each stage can be completed in polynomial time, so the verifier is overall polynomial. Therefore, $HAMC\in NP$
+	\end{proof}
+
+
 
 	\section{Exercise 2}
 	Old exam question, endterm 23--24:
@@ -97,11 +110,27 @@
 	\textbf{Instance:} Given a set $L$ of lectures, a set of students $S$, a collection of subsets $T$ with $|T|=|S|$ so that $T_i$ is the set of lectures that student $i$ needs to attend, and an integer $K$.\\
 	\textbf{Question:} Is there a function $f:L \to \set{1,2,\dots,K}$ that maps lectures to time slots so that all students can attend all their lectures. In other words, is there a function so that there is no student who has to attend two lectures that are mapped to the same time slot.
 
-	\vspace{1cm}
+	\begin{proof}
+		The following is a NTM $N$ that decides AmazingCustomChallenge in nondeterministic polynomial time:
+		\begin{quote}
+			$N=$ "On input $\langle L,S,T,K\rangle$:
+			\begin{enumerate}
+				\item For each lecture $l\in L$, nondeterministically choose a value $f(l)\in\set{1,\dots,K}$
+				\item For every student $i$ check that no lectures in $T_i=\set{l_{i_1},\dots,l_{i_x}}$ are assigned the same time-slot by looking them up for every pair $(l_{i_m},l_{i_n})$
+				\item Accept if no conflict is found, reject otherwise
+			\end{enumerate}
+		\end{quote}
+		Stage one has to guess $|L|$ numbers, and writing down each number would take $O(\log K)$, so overall stage 1 takes $O(|L|\log K)$. Stage 2 needs to check all pairs of lectures in every $T_i$, so this would be bounded by $O(\sum_{i=1}^{|S|}|T_i|^2)$, which would be a worst case of $O(|S|\cdot |L|^2)$. Stage 3 is constant. Therefore, overall machine N runs in $O(|L|\log K + |S|\cdot|L|^2)$, which is polynomial in the size of the input.
+	\end{proof}
 
 	\subsection{Not originally part of the exam question. Your answer to the previous question should have included time complexities. If we are to describe them in terms of $|I|$ where $I$ is an instance of the problem, what would be the complexity? (Hint: first think about $|I|$, is it $|S|$, or $|L|$, or some combination? How does $K$ factor into this?)}
 
-	\vspace{1cm}
+	\begin{align*}
+		|I| &\in O(|L|+|S|+\sum_{i}|T_i|+\log K)\\
+		|I| &\in O(|L|+|S| + |S|\cdot|L| + \log K)\\
+	\end{align*}
+
+	So, overall the runtime could be expressed roughly as $T(I)\in O(|I|^3)$.
 
 	\section{Exercise 5}
 	Variation on old exam question, resit 20--21:
