@@ -148,23 +148,27 @@
 		\begin{tikzpicture}[->, >=Stealth, auto, node distance=2.4cm]
 			\node[initial,state] (q0) {$q_0$};
 			\node[state] (q1) [right of=q0] {$q_1$};
-			\node[state] (q2) [below of=q1] {$q_2$};
-			\node[state] (q3) [below of=q2] {$q_3$};
+			\node[state] (q2) [below of=q0] {$q_2$};
+			\node[state, accepting] (q3) [below of=q1] {$q_3$};
 			\node[state] (q4) [right of=q1] {$q_4$};
 			\node[state] (q5) [below of=q4] {$q_5$};
 
 			\path
-			(q0) edge node {$a,b,c$} (q1)
-			(q1) edge node {$b$} (q4)
+			(q0) edge[loop above] node {$a,b,c$} (q0)
+			(q0) edge node {$b$} (q1)
+
 			(q4) edge node {$c$} (q5)
 			(q1) edge node {$a$} (q2)
 			(q2) edge node {$c$} (q3)
-			(q3) edge node {$a,b$} (q5)
+			(q3) edge[loop right] node {$a,b$} (q3)
+			(q3) edge node {$c$} (q4)
 			(q5) edge[loop right] node {$a,b,c$} (q5);
 		\end{tikzpicture}
 	\end{center}
 
-	\vspace{1cm}
+	\begin{align*}
+		(a\cup b\cup c)^*bac(a\cup b)^*
+	\end{align*}
 
 	\section{Exercise 7}
 	Revision, old exam question, endterm 16--17: Suppose we have the following language:
@@ -176,16 +180,38 @@
 
 	\subsection{A suitable problem to reduce from.}
 
-	\vspace{1cm}
+	We will reduce from $HALT_{TM}$
 
 	\subsection{A suitable reduction function $f:\Sigma^* \to \Sigma^*$.}
 
-	\vspace{1cm}
+	Take $f: \langle M,v\rangle \to \langle M',v,vladulon\rangle$, where:
+	\begin{quote}
+		$M'=$ "on input $x$:
+		\begin{enumerate}
+			\item Ignore input $x$.
+			\item Simulate $M$ on $v$ and ignore the output.
+			\item Output $vladulon$ on the tape"
+		\end{enumerate}
+	\end{quote}
+
 
 	\subsection{A proof showing $f$ satisfies the requirements of a mapping reduction.}
 
-	\vspace{1cm}
+	\begin{proof}
+		We must show that:
+		\begin{enumerate}
+			\item $f$ is computable
+			\item $\forall\langle M,v\rangle: \langle M,v\rangle\in HALT_{TM} \iff f(\langle M,v\rangle)\in L$
+		\end{enumerate}
 
-	\section{Bonus Exercise}
+		For computability, we can trivially see that we can construct the description of $M'$ to just simulate $M$ on the hardcoded input $v$ and then write our specific $vladulon$ string to the tape, and then after that description, append our encoding for $v$ and $vladulon$.\\
+
+		For Correctness, take any input $\langle M,v \rangle$ and consider the 2 cases:
+		\begin{enumerate}
+			\item $\langle M,v \rangle\in HALT_{TM}$: then $M$ halts on $v$; thus, by construction $M'$ will simulate $M$ on $v$ and eventually halt and after it does so it will write $vladulon$ on the tape. the output of our function $f$ says that $M'$ will correctly output $vladulon$ on the tape when ran on input v, which it does, so $\langle M',v,vladulon\rangle\in L$.
+			\item $\langle M,v \rangle\notin HALT_{TM}$; then, $M$ does not halt when ran on $v$. So neither will our machine $M'$ when it simulates $M$ on $v$. So $M'$ will get stuck in a loop before it can print $vladulon$ on the tape. Therefore $M'$ does not output $vladulon$ when ran on $v$, so $\langle M',v,vladulon\rangle\notin L$.
+		\end{enumerate}
+	\end{proof}
+
 
 \end{document}
