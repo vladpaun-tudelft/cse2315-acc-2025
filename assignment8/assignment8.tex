@@ -1,0 +1,233 @@
+\documentclass[a4paper,11pt]{article}
+
+% ---------- Packages ----------
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning,arrows.meta}
+
+% ---------- Theorem Environments ----------
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+
+% ---------- Custom Commands ----------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Alphabet}{\Sigma}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+
+% ---------- Section Style ----------
+\renewcommand{\thesubsection}{(\alph{subsection})}
+\renewcommand{\thesection}{}
+
+% ---------- Algorithm Style ----------
+\algrenewcommand\algorithmicrequire{\textbf{Input:}}
+\algrenewcommand\algorithmicensure{\textbf{Output:}}
+
+% ---------- Title Info ----------
+\title{\textbf{CSE2315 --- Assignment 8}}
+\author{Vlad Paun \\ 6152937}
+\date{\today}
+
+% ---------- Document ----------
+\begin{document}
+
+	\maketitle
+
+	\section{Exercise 1}
+	Consider the problem Hamiltonian Circuit (HAMC):
+	\[
+	\set{(V,E) \mid \text{The graph } G=(V,E) \text{ contains a simple cycle } \pi \text{ such that } \forall v \in V : v \in \pi}
+	\]
+
+	In a different notation we would write:
+
+	\textbf{Name:} Hamiltonian Circuit (HAMC)\\
+	\textbf{Input:} A graph $G=(V,E)$.\\
+	\textbf{Question:} Is there a simple cycle $\pi$ in $G$ such that all vertices $v \in V$ are in that cycle?
+
+	Now take the following reduction from HAMC to HAMP, given an instance $G=(V,E)$ of HAMC:
+	\begin{enumerate}[label=\Roman*.]
+		\item Copy $G$ and add 2 new nodes $a,b$ to $V$.
+		\item Pick some vertex $v_x \in V$: connect $b$ to all neighbours of $v_x$ and connect $a$ to $v_x$.
+	\end{enumerate}
+
+	Show that this reduction is not reliable.
+
+	\textit{Note: this can be quite challenging! Try and apply the reduction on some graphs and see what happens first, get a feeling for how the reduction influences the graphs.}
+
+	\vspace{1cm}
+
+	\section{Exercise 2}
+	After many hours of hard work, Prof. P. E. Kwalsenpee has managed to create an algorithm TSP-Decider that can solve the decision variant of TSP in polynomial time. That is, given a set
+	\[
+	S=\set{s_i}_{i=1}^n
+	\]
+	of cities, a $n \times n$ intercity distance matrix $D=[d_{i,j}]$ where $d_{i,j}\in \mathbb{Z}^+$ and a positive integer $k$, the algorithm will accept if and only if there is a tour through all vertices in $S$ such that the total cost of the tour is $\leq k$.
+
+	\subsection{Explain how we can also use TSP-Decider to decide the Hamiltonian Circuit problem in polynomial time.}
+
+	\vspace{1cm}
+
+	\subsection{Given this decision algorithm by the professor and an instance $(S,D,k)$ of TSP, give a polynomial time algorithm that returns an actual TSP-tour through the cities with total cost of at most $k$, if such a tour exists. If not, the algorithm should return \texttt{nil}.}
+
+	\vspace{1cm}
+
+	\section{Exercise 3}
+	An important problem in analysing social networks is the question whether there are persons in the network who occur in more than one large clique of the network. Therefore, we consider the following problem:
+
+	\textbf{Name} Important Node\\
+	\textbf{Instance} an undirected graph $G=(V,E)$, and two positive integers $K>1$ and $L>1$.\\
+	\textbf{Question} do there exist at least $K$ nodes $v \in V$ such that $v$ occurs in at least two different cliques of $G$, each containing at least $L$ nodes?
+
+	Show that Important Node is an NP problem.
+
+	\vspace{1cm}
+
+	\section{Exercise 4}
+	Old exam question:
+
+	Consider the following problem:
+
+	\textbf{Name} ItCanGoBothWays\\
+	\textbf{Instance} Given a finite set $S \subseteq \mathbb{N}$ and an integer $T$\\
+	\textbf{Question} Is there a subset $S' \subseteq S$ with $|S'| \leq T$ so that
+	\[
+	\sum_{s \in S'} s = \sum_{s \notin S'} s \, ?
+	\]
+
+	Give an example of a yes-instance and an example of a no-instance of this problem. Ensure that $5 \leq |S| \leq 10$. Include a very brief explanation of why your instances are a yes-instance and a no-instance.
+
+	\vspace{1cm}
+
+	\section{Exercise 5}
+	Old exam question, resit 20--21: Consider the following problem:
+
+	\textbf{Name} SatExcept\\
+	\textbf{Instance} A set of literals $U$ and a set of clauses $C$ and an integer $X$.\\
+	\textbf{Question} Is there a truth assignment satisfying $C$ such that at most $X$ clauses are not satisfied?
+
+	Consider the following reduction from an instance $I=(G=(V,E),K)$ of Vertex Cover to SatExcept:
+	\begin{itemize}
+		\item $U = V$
+		\item $C = \set{E \cup \set{\set{\neg v_i} \mid v_i \in V}}$
+		\item $X = K$
+	\end{itemize}
+
+	\subsection{Given the following 2 instances of vertex cover, of which 1 is a YES-instance and 1 is a NO-instance. Show this.}
+
+	Instance 1:
+
+	\begin{center}
+		\begin{tikzpicture}[->, >=Stealth, auto, node distance=2.2cm]
+			\node[state] (v8) {$v_8$};
+			\node[state] (v9) [right of=v8] {$v_9$};
+			\node[state] (v3) [below of=v8] {$v_3$};
+			\node[state] (v4) [below of=v9] {$v_4$};
+			\node[state] (v5) [right of=v4] {$v_5$};
+
+			\path
+			(v8) edge[-] (v9)
+			(v8) edge[-] (v3)
+			(v9) edge[-] (v3)
+			(v9) edge[-] (v4)
+			(v9) edge[-] (v5);
+		\end{tikzpicture}
+	\end{center}
+
+	With $K=2$
+
+	\vspace{0.5cm}
+
+	Instance 2:
+	\[
+	V=\set{v_1,v_2,v_3,v_4}, \quad E=\set{\set{v_1,v_2},\set{v_2,v_3},\set{v_1,v_4}}, \quad K=1
+	\]
+
+	\vspace{1cm}
+
+	\subsection{Now pick one of the instances, apply the reduction and show that result is still a yes-instance or no-instance (depending on which one you picked).}
+
+	\vspace{1cm}
+
+	\subsection{Show that the reduction can be performed in polynomial time.}
+
+	\vspace{1cm}
+
+	\section{Exercise 6}
+	Revision, old exam question midterm 20--21: Consider an NFA $N$ on the left and an NFA $N'$ on the right with transition diagrams as follows.
+
+	\begin{center}
+		\begin{tikzpicture}[->, >=Stealth, auto, node distance=2.2cm]
+			\node[initial,state] (q0) {$q_0$};
+			\node[state,accepting] (q1) [right of=q0] {$q_1$};
+			\node[state] (q2) [below of=q0] {$q_2$};
+			\node[state,accepting] (q3) [right of=q2] {$q_3$};
+
+			\path
+			(q0) edge[bend left] node {$b$} (q1)
+			(q1) edge[bend left] node {$b$} (q0)
+			(q0) edge node[left] {$a,b$} (q2)
+			(q1) edge node[right] {$b$} (q3)
+			(q2) edge[loop left] node {$a$} (q2)
+			(q2) edge[bend left] node {$\eps$} (q3)
+			(q3) edge[bend left] node {$a$} (q2)
+			(q3) edge[loop right] node {$a$} (q3);
+		\end{tikzpicture}
+		\hspace{1cm}
+		\begin{tikzpicture}[->, >=Stealth, auto, node distance=2.2cm]
+			\node[initial,state] (q4) {$q_4$};
+			\node[state,accepting] (q5) [right of=q4] {$q_5$};
+			\node[state] (q6) [below of=q5] {$q_6$};
+			\node[state,accepting] (q7) [right of=q6] {$q_7$};
+
+			\path
+			(q4) edge[loop above] node {$b$} (q4)
+			(q4) edge node {$a$} (q5)
+			(q5) edge[bend left] node {$a$} (q6)
+			(q5) edge node[right] {$b$} (q7)
+			(q6) edge[loop left] node {$a$} (q6)
+			(q6) edge[bend left] node {$b$} (q7)
+			(q7) edge[bend left] node {$a$} (q6)
+			(q7) edge[loop right] node {$b$} (q7);
+		\end{tikzpicture}
+	\end{center}
+
+	Describe how you could use $N$ and $N'$ to construct an NFA $N''$ such that
+	\[
+	L(N'') = L(N)^* \circ L(N').
+	\]
+	(note the `star' symbol after $L(N)$). How would you combine them and what you would need to change? Make sure to explain it for this particular example rather than the general principle.
+
+	\vspace{1cm}
+
+	\section{Exercise 7}
+	Revision, old exam question endterm 21--22: For each of the following claims, show the claim is true or give a counterexample and explanation to show the claim is false, starting your answer with either ``True'' or ``False''.
+
+	\subsection{If there is a direct reduction from $L$ to $A_{TM}$ and from $A_{TM}$ to $L$, then $\overline{L}$ is not Turing-recognisable.}
+
+	\vspace{1cm}
+
+	\subsection{If there is a Karp reduction $SAT \leq_P L$, then $L$ is undecidable.}
+
+	\vspace{1cm}
+
+	\section{Bonus Exercise}
+
+\end{document}
