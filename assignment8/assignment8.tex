@@ -56,8 +56,7 @@
 	\set{(V,E) \mid \text{The graph } G=(V,E) \text{ contains a simple cycle } \pi \text{ such that } \forall v \in V : v \in \pi}
 	\]
 
-	In a different notation we would write:
-
+	In a different notation we would write:\\
 	\textbf{Name:} Hamiltonian Circuit (HAMC)\\
 	\textbf{Input:} A graph $G=(V,E)$.\\
 	\textbf{Question:} Is there a simple cycle $\pi$ in $G$ such that all vertices $v \in V$ are in that cycle?
@@ -72,7 +71,7 @@
 
 	\textit{Note: this can be quite challenging! Try and apply the reduction on some graphs and see what happens first, get a feeling for how the reduction influences the graphs.}
 
-	\vspace{1cm}
+	\textbf{Answer: }The reduction is not reliable because the following does not hold: $\langle G \rangle\notin HAMC \to f(\langle G\rangle)\notin HAMP$. Take as a counterexample the graph $G=(\set{v_1,v_2,v_3},\set{\set{v_1,v_2},\set{v_2,v_3}})$. This graph does not have a Hamiltonian Circuit. However, if we take $f(\langle G\rangle)$ and let the $v_x$ that is picked in step II be $v_2$, then we obtain the new graph: $$G'=(\set{v_1,v_2,v_3,a,b},\set{\set{v_1,v_2},\set{v_2,v_3},\set{v_1,b},\set{v_3,b},\set{v_2,a}})$$which has a Hamiltonian path $(a,v_2,v_3,b,v_1)$
 
 	\section{Exercise 2}
 	After many hours of hard work, Prof. P. E. Kwalsenpee has managed to create an algorithm TSP-Decider that can solve the decision variant of TSP in polynomial time. That is, given a set
@@ -117,8 +116,7 @@
 	\vspace{1cm}
 
 	\section{Exercise 5}
-	Old exam question, resit 20--21: Consider the following problem:
-
+	Old exam question, resit 20--21: Consider the following problem:\\s
 	\textbf{Name} SatExcept\\
 	\textbf{Instance} A set of literals $U$ and a set of clauses $C$ and an integer $X$.\\
 	\textbf{Question} Is there a truth assignment satisfying $C$ such that at most $X$ clauses are not satisfied?
@@ -132,7 +130,7 @@
 
 	\subsection{Given the following 2 instances of vertex cover, of which 1 is a YES-instance and 1 is a NO-instance. Show this.}
 
-	Instance 1:
+	Instance 1: $K=2$
 
 	\begin{center}
 		\begin{tikzpicture}[->, >=Stealth, auto, node distance=2.2cm]
@@ -150,25 +148,30 @@
 			(v9) edge[-] (v5);
 		\end{tikzpicture}
 	\end{center}
-
-	With $K=2$
-
-	\vspace{0.5cm}
-
 	Instance 2:
 	\[
 	V=\set{v_1,v_2,v_3,v_4}, \quad E=\set{\set{v_1,v_2},\set{v_2,v_3},\set{v_1,v_4}}, \quad K=1
 	\]
+	\textbf{Answer: }Instance 1 is a YES-instance, as one of the possible solutions is $\set{v_9,v_8}$. Instance 2 can be shown to be a NO instance by looking at each vertex and seeing if it covers all others. You can then see that there is no solution with $K=1$ to this instance.
 
-	\vspace{1cm}
 
 	\subsection{Now pick one of the instances, apply the reduction and show that result is still a yes-instance or no-instance (depending on which one you picked).}
 
-	\vspace{1cm}
+	\begin{align*}
+		&f(I_1)=\langle\\
+		&\hspace{0.2cm} U=\set{v_3,v_4,v_5,v_8,v_9},\\
+		&\hspace{0.2cm} C=\set{(v_3\vee v_8),(v_3\vee v_9),(v_8\vee v_9),(v_9\vee v_4),(v_9\vee v_5), (\neg v_3), (\neg v_4), (\neg v_5), (\neg v_8), (\neg v_9)},\\
+		&\hspace{0.2cm} K=2 \\
+		&\rangle
+	\end{align*}
+	Now take the assignment:
+	$$\set{v_3=0,v_4=0,v_5=0,v_8=1,v_9=1}$$
+	All clauses in $C$ are satisfied except for 2: $(\neg v_8)$ and $(\neg v_9)$. Therefore, this is a YES-instance of SatExcept.
+
 
 	\subsection{Show that the reduction can be performed in polynomial time.}
 
-	\vspace{1cm}
+	Stage 1 and 3 are obviously linear, as they just copy parts of the input to the output. Stage 2 first iterates over all edges and copies them over as clauses, which is linear in the number of edges, and then creates a clause for every node, which is obviously linear in the number of nodes. So overall stage 2 is in $O(n+m)$ which is still polynomial in the size of the overall input.
 
 	\section{Exercise 6}
 	Revision, old exam question midterm 20--21: Consider an NFA $N$ on the left and an NFA $N'$ on the right with transition diagrams as follows.
