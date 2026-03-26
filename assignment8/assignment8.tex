@@ -82,22 +82,75 @@
 
 	\subsection{Explain how we can also use TSP-Decider to decide the Hamiltonian Circuit problem in polynomial time.}
 
-	\vspace{1cm}
+	We define a reduction $HAMC \leq_P TSP$ by using the following mapping function $f$:
+	\begin{align*}
+		&f:\Alphabet^*\to\Alphabet^*\\
+		&f(\langle G=\set{V,E}\rangle) = \langle S,D,k\rangle
+	\end{align*}
+	Where $S=V$,$k=|V|$ and $D=[d_{i,j}]$ where $d_{i,j}=1$ if $\set{v_i,v_j}\in E$ or $\infty$ otherwise.
+	$f$ defines a valid Karp reduction as it is both efficient (computable in polynomial time) and reliable.
+	\begin{enumerate}
+		\item \textbf{Efficiency: }The function $f$ needs to write 3 things on the tape: $S$,$D$ and $k$:
+		\begin{itemize}
+			\item S is just a copy of $V$ of the original graph, so it can be written in linear time
+			\item The matrix $D$ is $|V|\times |V|$, so the size is polynomial in the size of the input. And actually calculating each cell of the matrix is still polynomial, as you just need to look it up in $E$, so it would be $O(|E|)$. Overall creating D would be $O(|E|\cdot|V|^2)$
+			\item $k$ is just $|V|$, so you just need to go through all the nodes, which is linear.
+		\end{itemize}
+		Therefore, overall the function $f$ is computable in polynomial time.
+		\item \textbf{Reliability: } We need to prove $\langle G \rangle\in HAMC \iff f(\langle G\rangle)\in TSP$:
+		\begin{itemize}
+			\item $\langle G \rangle\in HAMC \to f(\langle G\rangle)\in TSP$: $G$ has a Hamiltonian cycle, so there is a simple cycle that goes through all the nodes. The edges of this cycle have weight exactly $1$ in our $TSP$ instance, and this cycle has exactly $|V|=k$ edges. Therefore, in our $TSP$ instance, there is a tour containing $k$ edges of weight 1, so a tour of overall weight $k$.
+			\item $f(\langle G\rangle)\in TSP\to \langle G \rangle\in HAMC $: The constructed $TSP$ instance has a tour going through all vertices of length at most $k=|V|$. Such a tour must also have exactly $|V|$ edges. This means that, by our construction, where edges have length either $1$ or $\infty$, all the edges of the tour have length $1$. These are exactly the edges of the graph $G$. So the tour only uses edges from $E$, so it corresponds to a Hamiltonian cycle in $G$.
+		\end{itemize}
+	\end{enumerate}
 
 	\subsection{Given this decision algorithm by the professor and an instance $(S,D,k)$ of TSP, give a polynomial time algorithm that returns an actual TSP-tour through the cities with total cost of at most $k$, if such a tour exists. If not, the algorithm should return \texttt{nil}.}
-
-	\vspace{1cm}
+	\textsc{Find-TSP-Tour($S,D,k$)}
+	\begin{enumerate}
+		\item Run \textsc{TSP-Decider($S,D,k$)}
+		\begin{itemize}
+			\item if it rejects, return \texttt{nil}
+		\end{itemize}
+		\item For every unordered pair of distinct vertices $(v_i,v_j)$:
+		\begin{itemize}
+			\item Set $d_{i,j}=d_{j,i}=k+1$ temporarily
+			\item Run \textsc{TSP-Decider($S,D,k$)}
+			\item if it accepts keep the change
+			\item if it rejects, revert to the old $d$ values
+		\end{itemize}
+		\item After all pairs useless edges have been processed, the set of edges left with weights under $k$ should encode the tour.
+	\end{enumerate}
 
 	\section{Exercise 3}
-	An important problem in analysing social networks is the question whether there are persons in the network who occur in more than one large clique of the network. Therefore, we consider the following problem:
-
+	An important problem in analysing social networks is the question whether there are persons in the network who occur in more than one large clique of the network. Therefore, we consider the following problem:\\
 	\textbf{Name} Important Node\\
 	\textbf{Instance} an undirected graph $G=(V,E)$, and two positive integers $K>1$ and $L>1$.\\
-	\textbf{Question} do there exist at least $K$ nodes $v \in V$ such that $v$ occurs in at least two different cliques of $G$, each containing at least $L$ nodes?
+	\textbf{Question} do there exist at least $K$ nodes $v \in V$ such that $v$ occurs in at least two different cliques of $G$, each containing at least $L$ nodes?\\
 
-	Show that Important Node is an NP problem.
+	Show that Important Node is an NP problem.\\
+	\textbf{Answer: }The following represents a polynomial time verifier for the problem, where the certificate $c$ encodes:
+	\begin{itemize}
+		\item the $K$ important nodes
+		\item for each of those nodes, two cliques of size at least $L$ that both contain the node
+	\end{itemize}
 
-	\vspace{1cm}
+	\begin{quote}
+		$V=$ "On input $\langle G,K,L, c\rangle$, where
+		\[
+		c=\big((v_1,C_{1,1},C_{1,2}),\dots,(v_K,C_{K,1},C_{K,2})\big),
+		\]
+		do the following:
+		\begin{enumerate}
+			\item Check that the certificate contains at least $K$ triples, all with distinct nodes.
+			\item For each $i\in\set{1,\dots,K}$:
+			\begin{enumerate}
+				\item Check that $v_i\in V$
+				\item Check that $|C_{i,1}|\geq L$ and $|C_{i,2}|\geq L$.
+				\item Check that $C_{i,1}$ and $C_{i,2}$ are both valid cliques.
+			\end{enumerate}
+			\item If all checks succeed, accept, otherwise reject."
+		\end{enumerate}
+	\end{quote}
 
 	\section{Exercise 4}
 	Old exam question:
