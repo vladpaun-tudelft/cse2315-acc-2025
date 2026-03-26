@@ -151,12 +151,10 @@
 			\item If all checks succeed, accept, otherwise reject."
 		\end{enumerate}
 	\end{quote}
+	Important note, I am assuming $K$ to be bounded to a maximum of $|V|$, as it wouldn't make sense otherwise. Thus, doing the checks $K$ times is still polynomial in the size of the overall input.
 
 	\section{Exercise 4}
-	Old exam question:
-
-	Consider the following problem:
-
+	Old exam question: Consider the following problem:\\
 	\textbf{Name} ItCanGoBothWays\\
 	\textbf{Instance} Given a finite set $S \subseteq \mathbb{N}$ and an integer $T$\\
 	\textbf{Question} Is there a subset $S' \subseteq S$ with $|S'| \leq T$ so that
@@ -166,7 +164,10 @@
 
 	Give an example of a yes-instance and an example of a no-instance of this problem. Ensure that $5 \leq |S| \leq 10$. Include a very brief explanation of why your instances are a yes-instance and a no-instance.
 
-	\vspace{1cm}
+	\textbf{Example YES-instance: }$S=\set{1,2,3,4,6,7,8,9},T=4,S'=\set{1,2,8,9}$\\
+
+	\textbf{Example NO-instance: }$S=\set{1,2,4,8,16},T=2$. Total sum is odd, so it cannot be split into 2 equal sub-sums.
+
 
 	\section{Exercise 5}
 	Old exam question, resit 20--21: Consider the following problem:\\s
@@ -256,8 +257,8 @@
 			\path
 			(q4) edge[loop above] node {$b$} (q4)
 			(q4) edge node {$a$} (q5)
-			(q5) edge[bend left] node {$a$} (q6)
-			(q5) edge node[right] {$b$} (q7)
+			(q5) edge node {$a$} (q6)
+			(q5) edge[bend left] node {$b$} (q7)
 			(q6) edge[loop left] node {$a$} (q6)
 			(q6) edge[bend left] node {$b$} (q7)
 			(q7) edge[bend left] node {$a$} (q6)
@@ -271,19 +272,17 @@
 	\]
 	(note the `star' symbol after $L(N)$). How would you combine them and what you would need to change? Make sure to explain it for this particular example rather than the general principle.
 
-	\vspace{1cm}
+	\textbf{Answer: }To construct $L(N)^*$ You would start by adding a new accepting and initial state. You would add an $\eps$-transition from this new initial state to the old initial state and also add $\eps$-transitions from every accepting state to the old initial state. Lets call this new NFA $N_*$. Then, to create the concatenation between $L(N_*)$ and $L(N')$, we add $\eps$-transitions from every accepting state of $N_*$ ($q_1$ and $q_3$) to the initial state of $N'$ ($q_4$) and also remove the 'accepting' feature of $q_1$ and $q_3$ and remove the 'initial' feature of state $q_4$.
 
 	\section{Exercise 7}
 	Revision, old exam question endterm 21--22: For each of the following claims, show the claim is true or give a counterexample and explanation to show the claim is false, starting your answer with either ``True'' or ``False''.
 
 	\subsection{If there is a direct reduction from $L$ to $A_{TM}$ and from $A_{TM}$ to $L$, then $\overline{L}$ is not Turing-recognisable.}
 
-	\vspace{1cm}
+	\textbf{True. }$A_{TM}\leq_{TM}L\iff \overline{A_{TM}}\leq_{TM}\overline{L}$. So therefore, in $\overline{L}$ where Turing recognizable, then so would $\overline{A_{TM}}$ be, which we know it isn't.
 
 	\subsection{If there is a Karp reduction $SAT \leq_P L$, then $L$ is undecidable.}
 
-	\vspace{1cm}
-
-	\section{Bonus Exercise}
+	\textbf{False. } We know $SAT$ to be NP Complete. And any $NPC$ problem is Karp reducible to any other $NPC$ problem. So take $L$ being any other NPC problem as a counterexample.
 
 \end{document}
